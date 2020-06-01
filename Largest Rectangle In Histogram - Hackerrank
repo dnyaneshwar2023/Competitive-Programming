@@ -1,0 +1,63 @@
+//dpw4112001
+// Coding Interview Question
+/*
+
+    Resourse : Youtube Video By Coding Blocks
+    Other Approaches:
+    Brute Force : O(N^2)
+    Divide and Conquer : O(NlogN)
+    Stacks : O(N)
+
+*/
+#include<bits/stdc++.h> 
+using namespace std; 
+int getMaxArea(int hist[], int n) 
+{      stack<int> s; 
+
+    int max_area = 0;  
+    int tp; // To store top of stack 
+    int area_with_top; 
+    int i = 0; 
+    while (i < n) 
+    { 
+        // If this bar is higher than the bar on top 
+        // stack, push it to stack 
+        if (s.empty() || hist[s.top()] <= hist[i]) 
+            s.push(i++); 
+        else
+        { 
+            tp = s.top(); // store the top index 
+            s.pop(); // pop the top 
+            area_with_top = hist[tp] * (s.empty() ? i : 
+                                i - s.top() - 1); 
+            //Finding Maximum Area
+            if (max_area < area_with_top) 
+                max_area = area_with_top; 
+        } 
+    } 
+
+
+    // Calculating area for remaing non-popped bars
+    while (s.empty() == false) 
+    { 
+        tp = s.top(); 
+        s.pop(); 
+        area_with_top = hist[tp] * (s.empty() ? i : 
+                                i - s.top() - 1); 
+        if (max_area < area_with_top) 
+            max_area = area_with_top; 
+    } 
+
+    return max_area; 
+} 
+
+int main() 
+{ 
+    int n;
+    cin >> n;
+    int hist[n];
+    for(int i=0;i<n;i++)
+    cin >> hist[i];
+    cout << getMaxArea(hist, n); 
+    return 0; 
+} 
