@@ -1,0 +1,80 @@
+//Considered only for () type brackets
+//Works for only valid Infix expression
+
+#include<bits/stdc++.h>
+using namespace std;
+int precedence(char c)
+{
+    if(c=='^')
+    return 3;
+    else if(c=='*' || c=='/')
+    return 2;
+    else if(c=='+' || c=='-')
+    return 1;
+    return -1;
+}
+int main()
+{
+    
+    string infix;
+    cout<<"Enter Infix : "<<endl;
+    cin >> infix;
+    string postfix;
+    stack<char>counter;
+    counter.push('#');
+    //Length of expression
+    int len=infix.length();
+    for(int i=0;i<len;i++)
+    {
+        //If operand find add directly to postfix
+        if((infix[i]>=65 && infix[i]<=90) || (infix[i]>=97 && infix[i]<=122))
+        {
+           postfix+=infix[i];
+            
+        }
+       else if(infix[i]=='(')
+        {
+           counter.push(infix[i]); //If opening bracket found add directly to stack
+        }
+        else if(infix[i]==')')
+        {
+            //If closing bracket is found pop stack untill opening bracket found and concatenate popped 
+            // characters in postfix
+            while(counter.top()!='#' && counter.top()!='(')
+            {
+                char c=counter.top();
+                counter.pop();
+                postfix+=c;
+            }
+            //delete latest opening bracket
+            if(counter.top()=='(')
+            {
+                char c=counter.top();
+                counter.pop();
+            }
+        }
+        else{
+            //If operator found pop top operators of precedence greater than equal to current and concatenate
+            // to postfix
+            while(counter.top()!='#' && precedence(infix[i])<=precedence(counter.top()))
+            {
+                char c=counter.top();
+                counter.pop();
+                postfix+=c;
+            }
+            counter.push(infix[i]);
+        }
+    }
+    
+    
+    // concatenate all remaining operands
+    while(counter.top() != '#') 
+    { 
+        char c = counter.top(); 
+        counter.pop(); 
+        postfix += c; 
+    } 
+    cout<<endl<<"Postfix"<<endl;  
+    cout<<postfix;
+    return 0;
+}
