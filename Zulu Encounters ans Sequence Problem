@@ -1,0 +1,50 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int T;
+int main(){
+	cin >> T;
+	while(T--){
+		long long n;
+		cin >> n;
+		long long arr[n];
+		for(int i=0;i<n;i++)
+		cin >> arr[i];
+		long long sol=0;
+		long long old;
+		old=arr[0];
+		for(int i=1;i<n;i++){
+			if(arr[i]>=arr[i-1]){
+				sol = max(sol,arr[i]-old);
+			} else {
+				old=arr[i];
+			}
+		}
+		old=arr[0];
+		for(int i=1;i<n;i++){
+			if(arr[i]<=arr[i-1]){
+				sol = max(sol,old-arr[i]);
+			} else {
+				old=arr[i];
+			}
+		}
+		reverse(arr,arr+n);
+		old=arr[0];
+		for(int i=1;i<n;i++){
+			if(arr[i]>=arr[i-1]){
+				sol = max(sol,arr[i]-old);
+			} else {
+				old=arr[i];
+			}
+		}
+		old=arr[0];
+		for(int i=1;i<n;i++){
+			if(arr[i]<=arr[i-1]){
+				sol = max(sol,old-arr[i]);
+			} else {
+				old=arr[i];
+			}
+		}
+		cout<<sol<<endl;
+	}
+}
