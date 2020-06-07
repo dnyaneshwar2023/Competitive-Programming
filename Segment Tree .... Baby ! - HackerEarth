@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+    int n,q;
+    cin>>n>>q;
+    int B[q][3];
+    int A[n+2]={0};
+    for(int i=0;i<q;i++)
+    {
+        int l,r,v;
+        cin>>l>>r>>v;
+        B[i][0]=l; B[i][1]=r; B[i][2]=v;
+ 
+        A[l]+=v;
+        A[r+1]-=v;
+    }
+ 
+    for(int i=1;i<=n;i++)//This gives resultant array
+    A[i]+=A[i-1];
+   
+    int res,m,max_value;
+    res=INT_MAX;
+ 
+ 
+    int max_left[n+2]={0};//Contains max element of the subarray left to any index
+    int max_right[n+2]={0};//Contains max element of the subarray right to any index
+ 
+    for(int i=1;i<=n;i++)
+    max_left[i]=max(A[i],max_left[i-1]);
+ 
+    for(int i=n;i>0;i--)
+    max_right[i]=max(A[i],max_right[i+1]);
+ 
+    max_value=max_left[n];//max value of array A
+ 
+    for(int i=0;i<q;i++)
+    {
+        int l,r,v;
+        l=B[i][0]; r=B[i][1]; v=B[i][2];
+ 
+        m=max(max_left[l-1],max_right[r+1]);//max of subarrays out of range of query
+ 
+        m=max(m,max_value-v);//we suppose that max element of array A is always in range of query
+        //Even if our supposition is wrong then max_left or max_right will handle it
+ 
+        if(res>m)
+        res=m;
+    }
+    cout<<res;
+    return 0;
+}
