@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define mod 1000000007
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        long long int ans,M=-1;
+        int n;
+        cin >> n;
+        int a[n+1],b[n+1],c[n+1];
+        stack <int> st;
+        int i;
+        for(i=1;i<=n;i++)
+            cin >> a[i];
+        st.push(1);
+        for(i=2;i<=n;i++)
+        {
+            while(!st.empty())
+            {
+                if(a[i]>=a[st.top()])
+                {
+                    b[st.top()]=i-st.top();
+                    st.pop();
+                }
+                else
+                    break;
+            }
+            st.push(i);
+        }
+        while(!st.empty())
+        {
+            b[st.top()]=n-st.top();
+            st.pop();
+        }
+        st.push(n);
+        for(i=n-1;i>=1;i--)
+        {
+            while(!st.empty())
+            {
+                if(a[i]>=a[st.top()])
+                {
+                    c[st.top()]=st.top()-i;
+                    st.pop();
+                }
+                else
+                    break;
+            }
+            st.push(i);
+        }
+        while(!st.empty())
+        {
+            c[st.top()]=st.top()-1;
+            st.pop();
+        }
+        /*for(i=1;i<=n;i++)
+            cout << b[i] << " " << c[i] << endl;*/
+        for(i=1;i<=n;i++)
+        {
+            long long int x=((b[i]%mod)+(c[i]%mod))%mod;
+            long long int s=((x%mod)*(i%mod))%mod;
+            if(s>M)
+            {
+                M=s;
+                ans=i;
+            }
+        }
+        cout << ans << endl;
+    }
+    return 0;
+}
