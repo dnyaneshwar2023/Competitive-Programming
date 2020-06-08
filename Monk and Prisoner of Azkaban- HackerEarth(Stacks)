@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+int main()
+{
+    ll n;
+    cin >> n;
+    ll a[n+1];
+    for(int i=1;i<=n;i++)
+    cin >> a[i];
+    stack<ll>s,st;
+    ll prev[n+1];
+    ll next[n+1];
+    for(int i=1;i<=n;i++)
+    {
+        while(!s.empty() && a[s.top()]<=a[i])
+        {
+            s.pop();
+        }
+        if(s.empty()==true){
+            prev[i]=-1;
+        }
+        else
+        {
+            prev[i]=s.top();
+        }
+        s.push(i);
+    }
+    while(s.empty()==false)
+    s.pop();
+     for(int i=n;i>=1;i--)
+    {
+        while(!s.empty() && a[s.top()]<=a[i])
+        {
+            s.pop();
+        }
+        if(s.empty()==true){
+            next[i]=-1;
+        }
+        else
+        {
+            next[i]=s.top();
+        }
+        s.push(i);
+    }
+    for(int i=1;i<=n;i++)
+    {
+        cout<<prev[i]+next[i]<<" ";
+    }
+}
