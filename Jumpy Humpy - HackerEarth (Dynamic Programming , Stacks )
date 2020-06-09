@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+int main()
+{
+    ll n;
+    cin >> n;
+    vector<ll>arr(n, 0);
+    for(int i = 0; i < n; i++)cin >> arr[i];
+    vector<ll>nxt(n, 0);
+    stack<ll>s;
+    s.push(0);
+    for(int i = 1; i < n; i++){
+        while(!s.empty() && arr[i] > arr[s.top()]){
+            nxt[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+    while(!s.empty()){
+        nxt[s.top()] = -1;
+        s.pop();
+    }
+    vector<ll>dp(n, 0);
+    ll ans = 0;
+    for(int i = n - 1; i >= 0; i--){
+        if(nxt[i] == -1){
+            dp[i] = arr[i];
+            ans = max(ans, dp[i]);
+            continue;
+        }
+        dp[i] = arr[i] ^ dp[nxt[i]];
+        ans = max(ans, dp[i]);
+    }
+    cout << ans << endl;
+    return 0;
+}
