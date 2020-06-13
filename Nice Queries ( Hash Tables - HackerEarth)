@@ -1,0 +1,37 @@
+#include<stdio.h>
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	long long int n;
+	int q;
+	scanf("%lld %d",&n,&q);
+	unordered_map<long long int,int> mp;
+	set <long long int> st;
+	int i;
+	for(i=0;i<q;i++){
+		long long int a,b;
+		scanf("%lld %lld",&a,&b);
+		if(a==1){
+			if(mp[b]==0){
+				mp[b]++;
+				st.insert(b);
+			}
+		}
+		else if(a==2){
+			if(mp[b]==1){
+				printf("%lld\n",b);
+			}
+			else if(st.upper_bound(b)==st.end()){
+				printf("-1\n");
+			}
+ 
+			else{
+				long long int store=*st.upper_bound(b);
+				printf("%lld\n",store);
+			}
+		}
+	}
+ 
+ 
+return 0;	
+}
