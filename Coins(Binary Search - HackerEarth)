@@ -1,0 +1,53 @@
+/*COINS
+There are N bags and each bag contains some coin(s). Your task is to select an integer X and remove all the bags in which the number of coins is equal to X. Divide the remaining bags into two non-empty groups such that:
+
+ The number of coin(s) in each bag of the first group is strictly smaller than X.
+The number of coin(s) in each bag of the second group is strictly larger than X.
+The total number of coins of one group is equal to the other.
+Input Format:
+
+The first line contains an integer N denoting the number of bags.
+The second line contains N space-separated integers,A[i] denoting the number of coins in ith  bags. The  integer denotes the values of A[i](1-10^5).
+
+Output Format:
+
+Print ,YES if it is possible to divide the bags into two groups, else print NO.
+*/
+#include<bits/stdc++.h>
+ 
+using namespace std;
+typedef long long int lli;
+
+int main()
+{
+    int n;
+    cin >> n;
+    int a[n];
+    for(auto &x: a) cin >> x;
+    int lo = 1, hi = 100000, mid;
+    while(lo <= hi){
+        mid = (lo+hi)/2;
+        lli small=0, big=0;
+        for(int i=0; i<n; i++){
+            if(a[i] > mid){
+                big += a[i];
+            }
+            else if(a[i] < mid){
+                small += a[i];
+            }
+        }
+        if(big != 0 && big == small){
+            printf("YES\n");
+            return 0;
+        }
+        if(big > small){
+            lo = mid+1;
+        }
+        else{
+            hi = mid-1;
+        }
+    }
+    printf("NO\n");
+ 
+    return 0;
+}
