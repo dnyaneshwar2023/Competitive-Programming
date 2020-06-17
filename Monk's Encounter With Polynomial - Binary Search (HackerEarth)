@@ -1,0 +1,37 @@
+/*
+Ax^2+Bx+c>=K
+found to be smallest value of x such that above condition in to be followed.
+*/
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int t;
+	cin >> t;
+	while(t--)
+	{
+		long long  a,b,c;
+		cin >> a >> b >> c;
+		long long k;
+		cin >> k;
+		long long ans;
+		long long low=0;
+		long long high=1000000;
+		while(low<=high)
+		{
+			long long  mid=low+(high-low)/2;
+			long long val=a*mid*mid+b*mid+c;
+			if(val>=k)
+			{
+				ans=mid;
+				high=mid-1;
+			}
+			else
+			{
+				low=mid+1;
+			}
+		}
+		cout<<ans<<'\n';
+	}
+	return 0;
+}
