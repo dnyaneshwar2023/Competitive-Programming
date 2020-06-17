@@ -1,0 +1,130 @@
+/*
+There are N students in a round table meeting. Each student belongs to a university given in the array , which denotes the university that the  student belongs to.
+There are Q queries of the form x y , denoting two universities. The answer to each query is the minimum time taken by any one of the student from these universities to meet each other.
+
+Note:
+Exactly 1 student of university x and y have to meet each other
+In this context, meeting means that the absolute distance between the positions is 
+Time taken by the student to move from  position to  or  position is exactly 1 second
+Both the students move together at the same time
+Both the students move optimally in the correct direction
+Two students can belong to the same university
+Round Table means that the nth position and 1st position are adjacent
+*/
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+int main() {
+int n,q;
+scanf("%d %d",&n,&q);
+int arr[n+1];
+arr[0]=0;
+for(int i=1;i<=n;i++)
+scanf("%d",&arr[i]);
+while(q>0)
+{
+int x,y;
+scanf("%d %d",&x,&y);
+vector<int> first;
+vector<int> second;
+if(n==1||(x==y))
+printf("0\n");
+else
+{
+for(int i=1;i<=n;i++)
+{
+if(arr[i]==x)
+first.push_back(i);
+else if(arr[i]==y)
+second.push_back(i);
+}
+int ans=INT_MAX;
+for(int i=0;i<second.size();i++)
+{
+int l=0;
+int h=first.size()-1;
+int small=-1;
+while(l<=h)
+{
+int m=(l+h)/2;
+if(first[m]<second[i])
+{
+small=first[m];
+l=m+1;
+}
+else
+h=m-1;
+}
+l=0;
+h=first.size()-1;
+int big=-1;
+while(l<=h)
+{
+int m=(l+h)/2;
+if(first[m]>second[i])
+{
+h=m-1;
+big=first[m];
+}
+else
+l=m+1;
+}
+ 
+if(small==-1 && big!=-1)
+{
+int temp1=((second[i]-1)+(n-first[first.size()-1]));
+int temp2=(big-second[i])-1;
+ 
+if((temp1)%2==0)
+temp1=temp1/2;
+else
+temp1=(temp1/2)+1;
+ 
+if((temp2)%2==0)
+temp2=temp2/2;
+else
+temp2=(temp2/2)+1;
+ 
+ans=min(ans,min(temp2,temp1));
+}
+else if(big==-1&& small!=-1)
+{
+int temp1=(second[i]-small)-1;
+int temp2=((first[0]-1)+(n-second[i]));
+ 
+if((temp1)%2==0)
+temp1=temp1/2;
+else
+temp1=(temp1/2)+1;
+ 
+if((temp2)%2==0)
+temp2=temp2/2;
+else
+temp2=(temp2/2)+1;
+ 
+ans=min(ans,min(temp2,temp1));
+}
+else if(small!=-1 && big!=-1)
+{
+int temp1=(second[i]-small)-1;
+int temp2=(big-second[i])-1;
+ 
+if((temp1)%2==0)
+temp1=temp1/2;
+else
+temp1=(temp1/2)+1;
+ 
+if((temp2)%2==0)
+temp2=temp2/2;
+else
+temp2=(temp2/2)+1;
+ 
+ans=min(ans,min(temp2,temp1));
+}
+}
+printf("%d\n",ans);
+}
+q--;
+}
+}
