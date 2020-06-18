@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define frloop(i,a,b) for(ll i=a;i<b;i++)
+ 
+bool fit(ll fre[26],ll k){
+	ll flag=0,val=0;
+	frloop(i,0,26){
+		if(fre[i]==0)continue;
+		if(fre[i]==1)flag=1;
+		else{
+			if(fre[i]&1)
+				flag=1;
+			val+=(fre[i]/2);
+		}
+	}
+	if(k&1){
+		if(2*val+flag>=k)return true;
+	}
+	else{
+		if(2*val>=k)return true;
+	}
+	return false;
+}
+ 
+bool check(string s,ll x , ll k){
+	ll fre[26]={0};
+	frloop(i,0,x){
+		fre[s[i]-'a']++;
+	}
+	if(fit(fre,k))
+		return true;
+	ll n=s.length();
+	frloop(i,x,n){
+		fre[s[i-x]-'a']--;
+		fre[s[i]-'a']++;
+		if(fit(fre,k))return true;
+	}
+	return false;
+}
+ 
+int main(){
+	ll t,k;
+	string s;
+	cin>>s>>t;
+	while(t--){
+		cin>>k;
+		ll st=k,e=s.length(),ans=-1;
+		while(e>=st){
+			ll mid=(st+e)/2;
+			if(check(s,mid,k)){
+				ans=mid;
+				e=mid-1;
+			}
+			else
+				st=mid+1;
+		}
+		cout<<ans<<endl;
+	}
+}
