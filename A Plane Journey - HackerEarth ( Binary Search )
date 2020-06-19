@@ -1,0 +1,76 @@
+A flight company has to schedule a journey of  groups of people from the same source to the same destination. Here, array A represents the number of people in each group. All groups are present at the source. The flight company has  planes where array B represents the capacity of each plane.
+
+You are required to send all groups to destination with the following conditions:
+
+Each plane can travel from the Source to Destination with only one group at a time such that capacity of a plane is enough to accommodate all people in that group.
+All people belonging to the same group travel together.
+Every plane can make multiple journeys between source and destination.
+It costs 1 unit of time to travel between source to destination and vice versa.
+Note: Multiple planes can fly together and also it is not necessary for planes to end their journey at the source.
+
+Determine the minimum time required to send all groups from the source to the destination. 
+
+..........................................................................................................................
+
+#include<bits/stdc++.h>
+#define ll long long
+#define IOS ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+using namespace std;
+int main()
+{
+    IOS;
+    ll n,m,cnt=0,i,t,p,j;
+    cin>>n>>m;
+    vector<ll>a;
+    vector<ll>b;
+    for(i=0;i<n;i++)
+    {
+        cin>>p;
+        a.push_back(p);
+    }
+ 
+    for(i=0;i<m;i++)
+    {
+        cin>>p;
+        b.push_back(p);
+    }
+ 
+    sort(a.begin(),a.end());
+    sort(b.begin(),b.end());
+    if(a[n-1]>b[m-1])
+    {
+        cout<<"-1";
+    }
+    else
+    {
+    int vis[m]={0};
+ 
+    for(i=0;i<n;i++)
+    {
+        auto it= lower_bound(b.begin(),b.end(),a[i]);
+		// it-begin == distance
+        if(vis[it-b.begin()]==1)
+        {
+            while(vis[it-b.begin()]==1)
+            {
+                it++;
+            }
+            if(it-b.begin()!=m)
+            {
+            vis[it-b.begin()]=1;
+            cnt++;
+            }
+        }
+        else
+        {
+            vis[it-b.begin()]=1;
+            cnt++;
+        }
+    }
+	// if (n-cnt)==0 means no plane used two times ans will be one considering all planes flied in same time
+    cout<<(1 + (n-cnt)*2);
+    }
+ 
+ 
+    return 0;
+}
