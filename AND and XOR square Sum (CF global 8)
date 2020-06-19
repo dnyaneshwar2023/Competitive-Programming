@@ -1,0 +1,51 @@
+/*
+You are given a collection of n non-negative integers a1,…,an. You are allowed to perform the following operation: choose two distinct indices 1≤i,j≤n. 
+If before the operation ai=x, aj=y, then after the operation ai=x AND y, aj=x OR y, where AND and OR are bitwise AND and OR respectively (refer to the Notes section for formal description). 
+The operation may be performed any number of times (possibly zero).
+
+After all operations are done, compute ∑ni=1a2i — the sum of squares of all ai. What is the largest sum of squares you can achieve?
+*/
+
+
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+ 
+typedef long long int ll;
+ 
+int main(){
+	ll n;
+	cin>>n;
+	vector<ll> count(30);
+	for(int i=0;i<n;i++){
+		ll a;
+		cin>>a;
+		ll k=0;
+		while(a>0){
+			count[k]+=a%2;
+			a/=2;
+			k++;
+		}
+	}
+ 
+	ll ans=0;
+	for(int i=0;i<n;i++){
+ 
+		ll num=0;
+ 
+		for(int j=0;j<22;j++){
+			if(count[j]>0){
+				num+=(1<<j);
+				count[j]--;
+			}
+		}
+ 
+		ans+=num*num;
+ 
+	}
+ 
+	cout<<ans<<endl;
+ 
+}
