@@ -1,0 +1,40 @@
+Given a string S which contains only lowercase characters ['a'-'z'] and an integer K 
+you have to find number of substrings having weight equal to K.
+
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        int k;
+        cin >> k;
+        string s;
+        cin >> s;
+        int currsum=0;
+        map<long long ,long long>occ;
+        long long count=0;
+        int n=s.length();
+        for(int i=0;i<n;i++)
+        {
+            currsum+=(s[i]-'a'+1);
+
+            if(currsum==k)
+            count++;
+            if(occ.find(k-currsum)!=occ.end())
+            {
+                count+=occ[k-currsum];
+            }
+            occ[currsum]++;
+        }
+        cout<<count<<'\n';
+
+
+    }
+    return 0;
+}
