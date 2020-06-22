@@ -1,0 +1,47 @@
+//Special integer, K, of an array, is an integer such that none of its subarray of size K has sum of elements greater than X.
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+bool check(ll sum[],ll n,ll k,ll limit)
+{
+	for(int i=1;i<=n-k+1;i++)
+	{
+		if((sum[i+k-1]-sum[i-1])>limit)\
+		return false;
+	}
+	return true;
+}
+int main()
+{
+
+ll n,x;
+cin >> n >> x;
+ll prefix[n+1];
+prefix[0]=0;
+for(int i=1;i<=n;i++)
+{
+	ll p;
+	cin >> p;
+	prefix[i]=prefix[i-1]+p;
+}
+ll low=0,high=n;
+ll mid;
+ll ans;
+while(low<=high)
+{
+	mid=(low+high)/2;
+	if(check(prefix,n,mid,x))
+	{
+		ans=mid;
+		low=mid+1;
+	}
+	else
+	{
+		high=mid-1;
+	}
+}
+cout<<ans;
+
+	return 0;
+}
