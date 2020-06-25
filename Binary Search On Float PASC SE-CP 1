@@ -1,0 +1,51 @@
+
+Problem Link - https://www.hackerrank.com/contests/pasc-se-cp-round-1/challenges/missing-nuclear-codes/problem
+
+#include <bits/stdc++.h>
+#define vi vector<int>
+#define pb push_back
+#define pii pair<int,int>
+#define inf 1e18
+#define fast ios_base :: sync_with_stdio(0);cin.tie(0);
+#define int long long
+using namespace std;
+
+int n;
+int k;
+const int M = 1e5;
+vi a(M);
+long double eps = 0.000000000000001;
+bool good(double m) {
+    double currspeed = m;
+    for(int i=0;i<n;i++) {
+        long double takeaway = currspeed*a[i];
+        takeaway /= 100;
+        currspeed = currspeed - takeaway;
+        if(currspeed < k) return false;
+    }
+    if(currspeed >= k) return true;
+    return false;
+}
+
+double f() {
+    double l = k, r = 1e16;
+    //cout<<l<<" "<<r;
+    double ans = l;
+    for(int i=0;i<500 && l+eps <= r;i++) {
+        long double mid = (l+r)*0.5f;
+        if(good(mid)) ans = mid, r = mid;
+        else l = mid;
+    }
+    return ans;
+}
+
+int32_t main() {
+    fast;
+    cout<<fixed<<setprecision(12);
+    cin>>n>>k;
+    for(int i=0;i<n;i++) {
+        cin>>a[i];
+    }
+    cout<<f();
+    return 0;   
+}
