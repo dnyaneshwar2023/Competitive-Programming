@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+
+#define int long long
+
+using namespace std ;
+
+int const N = 3e5 + 20 , inf = 3e18 + 20 ;
+int T , n , k , c , a[N] ;
+vector <int> vec[N] ;
+
+int32_t main(){
+	ios::sync_with_stdio(false) , cin.tie(0) , cout.tie(0) ;
+
+	cin >> T ;
+
+	while (T --) {
+		cin >> n >> k >> c ;
+
+		for (int i = 0 ; i < n ; i ++) {
+			cin >> a[i] ;
+		}
+
+		sort(a , a + n) ;
+
+		int l = 0 , r = n + 1 ;
+
+		while (l < r - 1) {
+			int md = (l + r) >> 1 ;
+
+			for (int i = 0 ; i < md ; i ++) {
+				vec[i].clear() ;
+			}
+
+			int nw = 0 ;
+			for (int i = 0 ; i < n ; i ++) {
+				if ((int)vec[nw].size() == k) {
+					break ;
+				}
+
+				if (vec[nw].empty() || (vec[nw].back() < inf / c && vec[nw].back() * c <= a[i])) {
+					vec[nw].push_back(a[i]) ;
+					nw = (nw + 1) % md ;
+				}
+			}
+
+			if ((int)vec[md - 1].size() == k) {
+				l = md ;
+			}
+			else {
+				r = md ;
+			}
+		}
+
+		cout << l << '\n' ;
+	}
+}
