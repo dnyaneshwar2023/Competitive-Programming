@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+#include <algorithm>
+#include <queue>
+#define ll long long
+#define f(i,j,k) for(int i=j;i<k;i++)
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL);
+
+using namespace std;
+
+int main(){
+    
+		fast_io
+
+    int t;
+    cin>>t;
+    while(t--){
+        ll k,Q,i,j,q;
+        cin>>k>>Q;
+        ll a[k],b[k],ans[Q+1];
+        f(i,0,k) cin>>a[i];
+        f(i,0,k) cin>>b[i];
+
+        sort(a,a+k);
+        sort(b,b+k);
+
+        priority_queue<ll> pq;
+
+        f(i,0,k){
+            f(j,0,k){
+                if(pq.size() <= 10000)
+                    pq.push(a[i]+b[j]);
+                else if(a[i]+b[j] < pq.top()){
+                    pq.pop();
+                    pq.push(a[i]+b[j]);
+                }
+                else
+                    break;
+            }
+        }
+        while(!pq.empty()){
+            ans[pq.size()] = pq.top();
+            pq.pop();
+        }
+
+        f(i,1,Q+1){
+            cin>>q;
+            cout<<ans[q]<<endl;
+        }
+
+    }
+
+    return 0;
+}
