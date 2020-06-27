@@ -1,0 +1,59 @@
+/*
+
+The Chef has acquired a vicious bunch of snakes, and these snakes are ever hungry and end up eating each other. 
+In particular, each snake i has a length Li, whose initial value is given to you. 
+A snake can eat any other snake which is not longer than itself. 
+That is, snake i can eat snake j (i ≠ j), if Li ≥ Lj. And when a snake eats another snake, its length increases by 1. That is, Li increases by 1. 
+A snake can eat multiple other snakes.
+
+The Chef doesn't care about snakes eating each other. All he wants is to have as many snakes as possible, which are at least some particular lengths long. 
+You are given Q values: K1, K2, .., KQ. Treat each of them independently and output the answer for each. 
+That is, for each Ki, assume that you start out from the beginning with all the snakes alive and the 
+lengths as the initial values given in the input, and find out the maximum number of snakes you can get whose length is at least Ki.
+
+*/
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+#define all(a) a.begin() , a.end()
+int main()
+{
+    
+    ll t;
+    cin >> t;
+    while (t--) {
+        ll n, q;
+        cin >> n >> q;
+        vector<ll> a(n + 1);
+        for (ll i = 1; i <= n; i++) {
+            cin >> a[i];
+        }
+        sort(all(a));
+        vector<ll> ps(n + 1);
+        for (ll i = 1; i <= n; i++) {
+            ps[i] = ps[i - 1] + a[i];
+        }
+        while (q--) {
+            ll k;
+            cin >> k;
+            ll idx = lower_bound(all(a), k) - a.begin();
+            idx -= 1;
+            ll lo = 1, hi = idx, ans = 0, have = n - idx;
+            while (lo <= hi) {
+                ll mid = (lo + hi) / 2;
+                ll cur = ps[idx] - ps[idx - mid];
+                ll req = mid * k - cur;
+                if (req < idx - mid + 1) {
+                    ans = mid;
+                    lo = mid + 1;
+                }
+                else
+                    hi = mid - 1;
+            }
+            cout << have + ans << '\n';
+        }
+    }
+}
