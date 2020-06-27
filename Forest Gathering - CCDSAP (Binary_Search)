@@ -1,0 +1,62 @@
+
+
+Chef is the head of commercial logging industry that recently bought a farm containing N trees. 
+You are given initial height of the i-th tree by Hi and the rate of growth of height as Ri meters per month. 
+For simplicity, you can assume that all the trees are perfect cylinders of equal radius. 
+This allows us to consider only the height of trees when we talk about the amount of wood.
+
+In Chef's country, laws don't allow one to cut a tree partially, so one has to cut the tree completely for gathering wood. 
+Also, laws prohibit cutting trees of heights (strictly) lower than L meters.
+
+Today Chef received an order of W meters (of height) of wood. 
+Chef wants to deliver this order as soon as possible. 
+Find out how minimum number of months he should wait after which he will able to fulfill the order. 
+You can assume that Chef's company's sawing machines are very efficient and take negligible amount of time to cut the trees.
+
+//  MULTIPLICATION OF LONG DOUBLE IS FAST AND IT REMOVES OVERFLOW ERROR FOR VALUES OF MULTIPLICATION OF VALUES 
+INT ORDER OF 1e18
+
+#include <bits/stdc++.h>
+typedef long long  ll;
+using namespace std;
+long double h[100004],r[100004];
+ll w,l;
+int n;
+int check(ll m)
+{   long double sum=0;
+    long double t=m;
+    for(int i=0;i<n;i++)
+    {
+        if(t>=(l-h[i])/r[i])
+        sum+=(h[i]+r[i]*m);
+        if(sum>=w)return 1;
+    }
+    return (sum>=w);
+}
+int main() {
+     ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cin >> n >> w >> l;
+    for(int i=0;i<n;i++)
+    {
+        cin >> h[i] >> r[i];
+    }
+
+    ll low=0;
+    ll high=1e18,ans;
+    while(low<=high)
+    {
+        ll mid=low+(high-low)/2;
+        if(check(mid))
+        {
+            ans=mid;
+            high=mid-1;
+        }
+        else
+        {
+            low=mid+1;
+        }
+    }
+    cout<<ans<<'\n';
+}
