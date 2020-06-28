@@ -1,0 +1,90 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+#define maxx 10000001
+int mp[maxx],mp2[maxx];
+//--------------upper bound function----------------
+int upper_boundd(int n,int hi)
+{
+    int lo=0,ans=0;
+    while(lo<=hi)
+    {
+        int mid=(lo+hi)/2;
+        if(mp[mid]>=n)
+        {
+            if(mp[mid]==n)
+            {
+                ans=mid;
+                lo=mid+1;          //pushing mean upward
+            }
+            else
+            {
+                hi=mid-1;
+            }
+        }
+        else
+        {
+            lo=mid+1;
+        }
+    }
+    return ans;
+}
+//-------------------main function-------------
+int main()
+{
+    int n,A[4008],B[4008],C[4008],D[4008];
+    while(scanf("%d",&n)==1)
+    {
+        for(int nn=1;nn<=n;nn++)
+        {
+            scanf("%d %d %d %d",&A[nn],&B[nn],&C[nn],&D[nn]);
+        }
+//-----------first 1/2--------------
+        int mp_indx=0;
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                int sum=A[i]+B[j];
+                mp[mp_indx]=sum;
+                mp_indx++;
+            }
+        }
+        sort(mp,mp+mp_indx);
+//-----------second 1/2--------------
+        int mp2_indx=0;
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                int sum=D[i]+C[j];
+                sum=sum*(-1);
+                mp2[mp2_indx]=sum;
+                mp2_indx++;
+            }
+        }
+        sort(mp2,mp2+mp2_indx);
+//-------- compare two arrays of sum---------------
+        int ans=0;
+        for(int ii=0;ii<mp2_indx;)
+        {
+            int val=mp2[ii];
+            int c=0;
+            while(mp2[ii]==val && ii<mp2_indx)
+            {
+                c++;
+                ii++;
+            }
+            int up=upper_boundd(val,mp_indx-1);
+            int jj=up;
+            while(mp[jj]==val)
+            {
+                jj--;
+                if(jj<0)    break;
+            }
+            ans=ans+(c* (up-jj));
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}
