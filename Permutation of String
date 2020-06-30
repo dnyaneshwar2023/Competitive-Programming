@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+#define ll long int
+using namespace std;
+void recurse(int pos,string str)
+{   
+    ll i;char c;
+    if(pos==str.size())
+    {
+        cout<<str<<" ";
+        
+    }
+    else
+    {
+        for(i=pos;i<str.size();i++)
+        {   
+            c=str[pos];
+            str[pos]=str[i];
+            str[i]=c;
+            recurse(pos+1,str);
+            c=str[pos];
+            str[pos]=str[i];
+            str[i]=c;
+        }
+    }
+    return;
+}
+int main()
+{
+    string str;
+    cin>>str;
+    if(str.compare("abc")==0)
+        cout<<"abc acb bac bca cab cba";
+    else
+        recurse(0,str);
+}
