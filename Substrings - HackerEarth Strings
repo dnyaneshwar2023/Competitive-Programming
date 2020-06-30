@@ -1,0 +1,77 @@
+You have a string S, but you like only special strings. So, you have to calculate the total number of special substrings in S.
+
+A string T, of length L, is called special string, if either of the following property holds:
+
+All characters of the string T are same. for example,aaaa 
+The string has an odd length (i.e, L is odd) and all characters of T are same except the middle character, for example, .
+Count the total number of special substrings in S.aabaa
+
+#include<bits/stdc++.h>
+using namespace std;
+//Constants:
+#define N 1000005
+#define ll long long
+
+ll le[N];
+ll ri[N];
+int main()
+{
+	ll t,i=0,j,count=0,p,ans=0,sum=0,l;
+		
+	t=1;
+	
+	while(t--)
+	{
+		string s;
+	    cin >> s;
+	    l=s.length();
+	    // Property 1
+	    ans=0;
+	    count=1;
+	    for(i=1;i<l;i++)
+	    {
+	    	if(s[i]==s[i-1])
+	    		count++;
+	    	else
+	    	{
+	    		ans+=count*(count+1)/2;
+	    		count=1;
+	    	}
+	    }
+	    ans+=count*(count+1)/2;
+        //Property 2
+	    count=1;
+	    for(i=1;i<l;i++)
+	    {
+	    	if(s[i]==s[i-1])
+	    		count++;
+	    	else
+	    	{
+	    		le[i]=count;
+	    		count=1;
+	    	}
+	    }
+	    count=1;
+		for(i=l-2;i>=0;i--)
+	    {
+	    	if(s[i]==s[i+1])
+	    		count++;
+	    	else
+	    	{
+	    		ri[i]=count;
+	    		count=1;
+	    	}
+	    }	    
+	    for(i=1;i<l-1;i++)
+	    {
+	    	p=min(le[i],ri[i]);
+	    	if(s[i-1]==s[i+1] && s[i]!=s[i+1])
+	    		ans+=p;
+	    }
+        cout<<ans<<'\n';
+		
+	}
+	
+	
+	return 0;
+}
