@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+long long canYouCount (string s) {
+   // write your code here
+    set<char>st;
+    long long ans=1;
+    for(int i=0;i<(int)s.length();i++)
+    {
+        if(s[i]=='_')
+        {
+            // Multiplying number of distinct ways for a single underscore
+            ans*=st.size();
+        }
+        else{
+            // Adding newly found underscore
+            if(s[i]=='a' || s[i]=='e'||s[i]=='i'||s[i]=='o'||s[i]=='u')
+            st.insert(s[i]);
+        }
+    }
+    return ans;
+}
+
+int main() {
+    //Already Given portion
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int T;
+    cin >> T;
+    for(int t_i=0; t_i<T; t_i++)
+    {
+        string s;
+        cin >> s;
+
+        long long out_;
+        out_ = canYouCount(s);
+        cout << out_;
+        cout << "\n";
+    }
+}
