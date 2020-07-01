@@ -1,0 +1,64 @@
+
+#include<bits/stdc++.h>
+#include<string.h>
+using namespace std;
+void compute(char str[],int b);
+int main()
+{
+int t,i,b;
+char str[100001];
+scanf("%d",&t);
+for(i=0;i<=t-1;i++)
+{
+getchar();
+scanf("%s",str);
+b=strlen(str);
+compute(str,b);
+}
+return 0;
+}
+ 
+void compute(char str[],int b)
+{
+int i=1;
+int len=0;
+int lps[b+1];
+lps[0]=0;
+while(i<b)
+{
+if(str[i]==str[len])
+{
+len++;
+lps[i]=len;
+i++;
+}
+else
+{
+if(len!=0)
+{
+len=lps[len-1];
+}
+else
+{
+lps[i]=0;
+i++;
+}
+}
+}
+int j;
+for(j=i-1;j>=0;j--)
+{
+if(lps[j]==1)
+{
+break;
+}
+}
+if(lps[b-1]%j==0 && lps[b-1]!=0)
+{
+printf("%d\n\n",j);
+}
+else
+{
+printf("%d\n\n",b);
+}
+}
