@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+#define pb push_back
+#define pro ios_base::sync_with_stdio(0);cin.tie(0);
+#define f(i,s,e) for(int i=s;i<=e;i++)
+int main()
+{
+    pro
+    string s;
+    cin>>s;
+    int len = s.size();
+    s += s;
+    int i=0,j=1,k=0,l=0;
+    for( ;j<len; )
+    {
+        
+        for (k = 0; k < len && s[i + k] == s[j + k]; ++k);
+        if(k>=len) break;
+ 
+        if (s[i + k] > s[j + k])
+          j+=( k+1 );
+        else
+        {
+          l = i + k;
+          i = j;
+          j = max(l, j) + 1;
+        }
+    }
+    cout<<s.substr(i,len)<<endl;
+    return 0;
+}
