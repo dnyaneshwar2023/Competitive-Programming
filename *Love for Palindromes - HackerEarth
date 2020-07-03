@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int t;
+    cin >> t;
+    while(t--) {
+        string s;
+        cin >> s;
+        int i, j, n = s.length();
+        int flag = 0;
+        for(i = 0; i < n-1; i++) {
+			// If alreay two length palindrome is present
+            if(s[i] == s[i+1])
+                flag = 1;
+       //If already string of type x*x is present
+	        if(i != n-2 && s[i] == s[i+2])
+                flag = 1;
+        }
+        if(flag)
+            cout << 0 << endl;
+        else {
+            unordered_map<char, int> pos; 
+            int ans = 1e9;
+            for(i = 0; i < n; i++) {
+				// Palindrome of type x*x will be done after below operation
+                if(pos.count(s[i]) > 0) 
+                    ans = min(ans, i-pos[s[i]]-1);
+                pos[s[i]] = i;
+            }
+            if(ans == 1e9)
+                cout << -1 << '\n';
+            else
+                cout << ans << '\n';
+        }
+    }
+    return 0;
+}
