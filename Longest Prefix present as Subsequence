@@ -1,0 +1,28 @@
+
+#include<bits/stdc++.h> 
+using namespace std; 
+
+int maxPrefix(string s,string t) 
+{ 
+	int count = 0; 
+
+	for (int i = 0; i<(int)t.length(); i++) 
+	{ 
+		if (count == s.length())
+			break; 
+		if (t[i] == s[count]) 
+			count++; 
+	} 
+
+	return count; 
+} 
+
+int main() 
+{ 	
+	string S,T;
+	cin >> S >> T;
+	cout << maxPrefix(S, T) 
+		<< endl; 
+
+	return 0; 
+} 
