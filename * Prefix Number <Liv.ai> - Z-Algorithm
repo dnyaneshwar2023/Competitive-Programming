@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define ll     int 
+int calculate (string s) {
+   // Write your code here
+ 
+    int n = s.size();
+    int L=0,R=0,k=0, Z[n];
+    Z[0] = 0;
+    for(ll i = 1; i < n; i++){
+        if(i > R){
+            L=R=i;
+            while(R<n && s[R-L] == s[R])R++;
+            Z[i] = R-L; R--;
+        }
+        else{
+            k = i-L;
+            if(Z[k] < R-i+1){Z[i] = Z[k];}
+            else{
+                L=i;
+                while(R<n && s[R-L] == s[R])R++;
+                Z[i] = R-L; R--;
+            }
+        }
+    }
+    // below contains if z[i]>=i that is string just   greater than current prefix length and necessary it contains ending zeros    
+    ll cnt = 0;
+    for(ll i = 1; i < s.size(); i++){if(Z[i]>=i)cnt++;}
+    return cnt;  
+}
+ 
+ 
+int main() {
+ 
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    string N;
+    getline(cin, N);
+ 
+    int out_;
+    out_ = calculate(N);
+    cout << out_;
+}
