@@ -1,0 +1,23 @@
+//Dnyaneshwar_4
+#include<bits/stdc++.h>
+using namespace std;;
+typedef long long ll;
+int main()
+{
+   int n;
+   cin >> n;
+   ll ans=0;
+
+   for(int i=0;i<n;i++)
+   {
+	   ll p;
+	   cin >> p;
+	   // this only or will set all unsetted bits in p array so not need to find p 
+	   ans|=p;
+   }
+   cout<<ans<<'\n';
+    
+    return 0;
+}
+
+
