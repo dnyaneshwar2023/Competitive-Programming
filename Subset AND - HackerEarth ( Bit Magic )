@@ -1,0 +1,57 @@
+//Dnyaneshwar_4
+#include<bits/stdc++.h>
+using namespace std;;
+typedef long long ll;
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--){
+
+        ll z;
+        cin >> z;
+        ll n;
+        cin >> n;
+        ll bit[32]={0};
+        int bno=0;
+        while(z>0)
+        {
+            bit[bno]=(z%2);
+            bno++;
+            z/=2;
+        }
+        for(int i=0;i<n;i++)
+        {
+            ll p;
+            cin >> p;
+            bno=0;
+            while(p>0)
+            {
+                bit[bno]=bit[bno]&(p%2);
+                bno++;
+                p/=2;
+            }
+            while(bno<32)
+            {
+                bit[bno]=bit[bno]&0;
+                bno++;
+            }
+        }
+        int flag=1;
+        for(int i=0;i<32;i++)
+        {
+            if(bit[i])
+            {
+                flag=0;
+                break;
+            }
+        }
+        if(flag)
+            cout<<"Yes\n";
+        else
+            cout<<"No\n";
+    }
+    return 0;
+}
+
+
