@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    //freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    int n;
+    scanf("%d",&n);
+    bitset<40> b(n);
+    string s=b.to_string();
+    int r=0;
+    vector<int> v;
+	//cout<<s;
+    int p=0;
+    for(int i=0;i<s.size();i++)
+    {
+        if(s[i]=='0'&&r==0){
+            continue;
+        }
+        else
+            r=1;
+        v.push_back(p^(s[i]-'0'));
+        p=p^(s[i]-'0');
+    }
+    int ans=0,val=1;
+    for(int i=v.size()-1;i>=0;i--)
+    {
+        ans=ans+val*v[i];
+        val=val*2;
+    }
+    cout<<ans;
+    return 0;
+}
