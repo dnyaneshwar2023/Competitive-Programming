@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define MOD 1000000007
+int main()
+{
+    int n;
+    cin >> n;
+    int bits[33]={0};
+    ll reward1=0,count1=0;
+    ll reward2=0,count2=0;
+    for(int i=0;i<n;i++)
+    {
+        ll p;
+        cin >> p;
+        count1+=p;
+        int bit_no=0;
+        while(p>0)
+        {
+            if(p%2==1)
+            {
+                bits[bit_no]=1;
+            }
+            p/=2;
+            bit_no++;
+        }
+    }
+    for(int i=0;i<33;i++)
+    {
+        if(bits[i])
+            reward1+=(ll)(1<<i);
+    }
+    for(int i=0;i<33;i++)bits[i]=0;
+    for(int i=0;i<n;i++)
+    {
+        ll p;
+        cin >> p;
+        count2+=p;
+        int bit_no=0;
+        while(p>0)
+        {
+            if(p%2==1)
+            {
+                bits[bit_no]=1;
+            }
+            p/=2;
+            bit_no++;
+        }
+    }
+    for(int i=0;i<33;i++)
+    {
+        if(bits[i])
+            reward2+=(ll)(1<<i);
+    }
+    reward1=count1-reward1;
+    reward2=count2-reward2;
+    if(reward1>reward2)
+    {
+        cout<<1<<' '<<abs(reward1-reward2);
+    }
+    else if(reward1<reward2)
+    {
+        cout<<2<<" "<<abs(reward1-reward2);
+    }
+    else
+    {
+        cout<<1<<'\n';
+    }
+
+    return 0;
+}
