@@ -1,0 +1,52 @@
+I demand a trial by combat
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define MOD 1000000007
+ll bit[100001][32];
+int main()
+{
+    int n,k;
+    cin >> n >> k;
+    for(int i=1;i<=n;i++)
+    {
+        ll p;
+        cin >> p;
+        for(ll b=0;b<32;b++)
+        {
+            if(p&(1<<b))
+             bit[i][b]=1;
+             else
+              bit[i][b]=0;
+        }
+    }
+    for(ll i=2;i<=n;i++)
+    {
+        for(ll b=0;b<32;b++)
+        {
+            bit[i][b]+=bit[i-1][b];
+        }
+    }
+    while(k--){
+        ll l,r,x;
+        cin >> l >> r >> x;
+        ll count=0;
+        ll num=(r-l+1);
+        for(ll b=0;b<32;b++){
+            ll oc=bit[r][b]-bit[l-1][b];
+            ll zc=num-oc;
+            if(x&(1<<b))
+            {
+                count+=(zc*(1<<b));
+            }
+            else
+            {
+                count+=(oc*(1<<b));
+            }
+        }
+        cout<<count<<'\n';
+       
+    }
+
+    return 0;
+}
