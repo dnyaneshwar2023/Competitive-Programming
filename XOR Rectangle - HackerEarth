@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define rep(i,n) for(int i=0;i<n;i++)
+int s[1000011][32];
+int p[1000011];
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+    int N;
+    cin >> N;
+    for(int i=1;i<=N;i++) {
+        cin >> p[i];
+        for(int j=0;j<20;j++) {
+            if(p[i]&(1<<j)) {
+                s[i][j]++;
+            }
+            s[i][j]+=s[i-1][j];
+        }
+    }
+    ll o1,o2,z1,z2;
+    int Q,x1,y1,x2,y2;
+    cin >> Q;
+    while(Q--) {
+        cin >> x1 >> y1 >> x2 >> y2;
+        ll ans = 0;
+        rep(j,20) {
+            o1 = s[x2][j]-s[x1-1][j];
+            z1 = x2-x1+1 - o1;
+            o2 = s[y2][j]-s[y1-1][j];
+            z2 = y2-y1+1 - o2;
+            ans+=(o1*z2+o2*z1)*(1LL<<j);
+        }
+        cout << ans << "\n";
+    }
+}
