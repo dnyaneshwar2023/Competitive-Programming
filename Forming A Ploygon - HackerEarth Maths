@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+int mod=1e9+7;
+ll fast(ll a,ll n){
+	a%=mod;
+	ll res=1;
+	while(n>0){
+		if(n&1)res=res*a%mod;
+		a=a*a%mod;
+		n>>=1;
+	}
+	return res;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+	int n;
+	cin>>n;
+ 
+	unordered_map<ll,ll>umap;
+	while(n--){
+		ll a;
+		cin>>a;
+		umap[a]++;
+	}
+	ll ans=0;
+	for(auto itr:umap){
+		ll f=itr.second;
+		ans=ans+fast(2,f);
+		ans=ans-1-f%mod-(((f*(f-1)))/2)%mod;
+		ans+=mod;
+		ans%=mod;
+	}
+	cout<<ans<<endl;
+	return 0;
+}
+ 
