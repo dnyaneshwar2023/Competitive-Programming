@@ -1,0 +1,51 @@
+Given an integer , you have to find sum of all natural numbers less than n  such that their GCD  with given  is 1.
+Since sum can be large, print it by taking modulo with 10^9+7.
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define MOD 1000000007
+ll ETF(ll n)
+{
+    ll c=n;
+    for(int i=2;i*i<=n;i++)
+    {
+        if(n%i==0)
+        {
+            c/=i;
+            c*=(i-1);
+            while(n%i==0)
+                n/=i;
+        }
+    }
+    if(n>1)
+    {
+        c/=n;
+        c*=(n-1);
+
+    }
+    return (c/2)%MOD;
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t;
+    t=1;
+    while(t--){
+        ll n;
+        cin >> n;
+        ll phi=0;
+        if(n<=2)
+        {
+            cout<<n-1<<'\n';
+            return 0;
+        }
+        phi=ETF(n);
+        cout<<((n%MOD)*(phi%MOD))%MOD<<'\n';
+    }
+    return 0;
+}
