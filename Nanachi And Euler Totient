@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define mod 1000000007
+ll phi(ll n) 
+{ 
+    ll result=n;
+ 
+    for (ll p=2;p*p<=n;p++) { 
+         
+        if (n%p==0) { 
+             
+            while(n%p==0) 
+                n/=p; 
+            result-=result/p; 
+        } 
+    } 
+    if (n>1) 
+        result-=result/n; 
+    return result%mod; 
+} 
+int main() 
+{ 
+    ll i; 
+     ll n;
+    ll ans=1;
+    cin>>n;
+    for(ll i=1;i*i<=n;i++){
+        if(n%i==0){
+            if(n/i==i){
+            ans=((ans%mod)*(phi(i)%mod))%mod;
+            }
+            else{
+             ans=((ans%mod)*(phi(i)%mod))%mod;
+            ans=((ans%mod)*(phi(n/i)%mod))%mod;
+            }
+        }
+    }
+    cout<<ans<<endl;
+    return 0; 
+} 
