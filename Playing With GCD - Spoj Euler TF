@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define MAX 100000
+vector<ll>phi(100001,0),comp(100001,0);
+void computeTotient()
+{
+    phi[1] = 1;
+    for (int i=2; i<=MAX; i++) {
+        if (!phi[i]) {
+            phi[i] = i - 1;
+            for (int j = (i << 1); j <= MAX; j += i) {
+                if (!phi[j])
+                    phi[j] = j;
+
+                phi[j] = (phi[j] / i) * (i - 1);
+            }
+        }
+    }
+    for(int i=1;i<=100000;i++)
+    {
+        comp[i]=comp[i-1];
+        comp[i]+=phi[i];
+    }
+}
+int main()
+{
+    computeTotient();
+    int t;
+    cin >> t;
+    int cse=1;
+    while(t--)
+    {
+        ll n;
+        cin >> n;
+        cout<<"Case "<<cse<<":"<<' ';
+        ll c=(n*(n+1)/2)-comp[n];
+        cout<<c<<'\n';
+        cse++;
+    }
+} 
