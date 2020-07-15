@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+#define N 10000000
+using namespace std;
+#define ll long long
+int lp[N+5];
+int phi[N+5];
+vector<int> pr;
+void calc_sieve()
+{
+	phi[1] = 1;
+    	for (int i = 2; i <= N; ++i)
+    	{
+        	if (lp[i] == 0)
+        	{
+            		lp[i] = i;
+            		phi[i] = i - 1;
+            		pr.push_back(i);
+        	}
+        	else
+        	{
+            		if (lp[i] == lp[i / lp[i]])
+                		phi[i] = phi[i / lp[i]] * lp[i];
+            		else
+                		phi[i] = phi[i / lp[i]] * (lp[i] - 1);
+        	}
+        	for (int j = 0; j < (int)pr.size() && pr[j] <= lp[i] && i * pr[j] <= N; j++)
+            		lp[i * pr[j]] = pr[j];
+    	}
+}
+ll power(ll x,ll y,ll mod)
+{
+	x%=mod;
+	ll res=1;
+	while(y)
+	{
+		if(y&1)res=(res*x)%mod;
+		y>>=1;
+		x=(x*x)%mod;
+	}
+	return res;
+}
+int main()
+{
+	calc_sieve();
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		ll n,k,mod,count=0;
+		scanf("%lld%lld%lld",&n,&k,&mod);
+		ll arr[50];
+		while(mod>1)
+		{
+			arr[count++]=mod;
+			mod=phi[mod];
+		}
+		ll pow=1;
+		int loop=count+1;arr[count]=1;
+		for(int i=min(k,(ll)loop)-1;i>=0;i--)
+			pow=power(n,pow,arr[i]);
+		printf("%lld\n",pow);
+	}
+	return 0;
+}
+Tester Solution by Lewin Gan
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+ll etf[10000100];
+ll prime[10000100];
+ll power(ll a, ll b, ll mod){
+        ll ret = 1;
+        while(b){
+                if(b & 1 ) ret = ret*a % mod;
+                a = a*a % mod;
+                b >>= 1 ;
+        }
+        return ret;
+}
+ll solve(ll x, ll k, ll m){
+	if(!k)return 1;
+	if(m == 1)return 0;
+	return power(x, solve(x, k-1, etf[m]), m);
+}
+int main(){
+	ll t;scanf("%lld", &t);//assert(t >= 1 && t <= 100000);
+	etf[1] = 1;
+	for(ll i=2; i<=10000000; i++){
+		if(!prime[i]){
+			etf[i] = i-1;
+			for(ll j=1; j*i <= 10000000; j++)
+				if(!prime[j*i])prime[j*i] = i;
+		}
+		else{
+			etf[i] = etf[prime[i]]*etf[i/prime[i]];
+			ll g=1;
+			if(i%(prime[i]*prime[i]) == 0)g=prime[i];
+			etf[i]*=g;
+			etf[i]/=etf[g];
+		}
+	}
+	while(t--){
+		ll x, k, m;
+		scanf("%lld%lld%lld", &x, &k, &m);
+		printf("%lld\n", solve(x, k, m));
+	}
+	return 0;
+}
