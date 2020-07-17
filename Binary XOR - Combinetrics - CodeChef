@@ -1,0 +1,76 @@
+
+
+/// dpw4112001
+
+
+#include<iostream>
+#include<stack>
+#include<vector>
+#include<cstdio>
+#include<map>
+using namespace std;
+const long long MX = 1e5+5;
+const long long M = 1e9+7;
+long long fc[MX],mi[MX];
+typedef long long ll;
+ll p(ll x,ll y)
+{
+    ll res = 1;
+    while(y)
+    {
+        if(y&1)
+            res = (res*x)%M;
+        y>>=1;
+        x = (x*x)%M;
+    }
+    return res;
+}
+
+ll ncr(ll n,ll r)
+{
+    ll res = fc[n];
+    res = (res*mi[r])%M;
+    res = (res*mi[n-r])%M;
+    return res;
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    fc[0]=1;
+    for(long long i=1; i<MX; i++)
+        fc[i]=(fc[i-1]*i)%M;
+    mi[MX-1] = p(fc[MX-1],M-2);
+    for(long long i=MX-2; i>=0; i--)
+        mi[i] = (mi[i+1]*(i+1))%M;
+    ll t;
+    cin >> t;
+    while(t--)
+    {
+        ll n;
+        string a,b;
+        cin >> n >> a >> b;
+        ll c1=0,c2=0,c3=0,c4=0;
+        for(ll i=0; i<n; i++)
+        {
+            if(a[i]=='0')
+                c1++;
+            if(a[i]=='1')
+                c2++;
+            if(b[i]=='0')
+                c3++;
+            if(b[i]=='1')
+                c4++;
+        }
+        ll l = n-min(c1,c3)-min(c2,c4);
+        ll r = l + 2*(min(min(c1,c3),min(c2,c4)));
+        ll ans = 0;
+        for(ll i=l; i<=r; i+=2)
+        {
+            ans = (ans+ncr(n,i))%M;
+        }
+        cout << ans << "\n";
+    }
+
+}
