@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int maxN = 100005;
+int fact[maxN] = {};
+vector<vector<int>> pre(6, vector<int>(maxN));
+void seive()
+{
+    for (int i = 2; i < maxN; i++)
+    {
+        if(!fact[i])
+        {
+            fact[i] = 1;
+            for (int j = 2 * i; j < maxN; j+=i)
+                fact[j]++;
+        }
+    }
+    for (int i = 1; i < maxN; i++)
+    {
+        for (int j = 1; j < 6; j++)
+            pre[j][i] = pre[j][i - 1] + (fact[i] == j);
+    }
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    int t;
+    cin >> t;
+    seive();
+    while (t--)
+    {
+        int a, b, k;
+        cin >> a >> b >> k;
+        cout << pre[k][b] - pre[k][a - 1] << endl;
+    }
+
+    return 0;
+}
