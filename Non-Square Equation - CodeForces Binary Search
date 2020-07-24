@@ -1,0 +1,39 @@
+#include <iostream>
+#include <math.h>
+using namespace std ;
+typedef long long LL ;
+long long func(long long n){
+    long long ans = 0 ;
+    while(n){
+        ans += n % 10 ;
+        n /= 10 ;
+    }
+    return ans ;
+}
+LL work(LL k, LL n){
+    LL ans = -1 ;
+    LL l = 1 , r = (LL)(sqrt(n * 1.0) + 1) ;
+    while(l <= r){
+        LL mid = (l + r) >> 1 ;
+        LL tmp = mid * mid + mid * k ;
+        if(tmp == n)    return mid ;
+        if(tmp < n) l = mid + 1;
+        else    r = mid - 1 ;
+    }
+    return -1 ;
+}
+int main(){
+    long long n ;
+    cin >> n ;
+    LL ans = -1 ;
+    for(LL sx=1; sx<=81; sx++){
+        LL x = work(sx, n) ;
+        if(x != -1 && func(x) == sx){
+            ans = x ;
+            break ;
+        }
+    }
+    cout << ans << endl ;
+    return 0 ;
+
+}
