@@ -1,0 +1,44 @@
+D1 - Prefix-Suffix Palindrome (Easy version)
+
+
+#include<bits/stdc++.h>
+using namespace std;
+bool ok(string &s,int l,int r)
+{
+   while(l<=r && s[l]==s[r])
+   l++,r--;
+   
+   return l>r;
+}
+int main()
+{
+  int t;
+  cin>>t;
+  while(t--)
+  {
+  string s;
+  cin>>s;
+  int l=0,r=s.size()-1;
+  while(l<r && s[l]==s[r])
+  l++,r--;
+  int r2,l2;
+  
+  for(r2=r;r2>=l;r2--)
+  if(ok(s,l,r2))
+  break;
+  
+  for(l2=l;l2<=r;l2++)
+  if(ok(s,l2,r))
+  break;
+  
+  string st;
+  if(r2-l>r-l2)
+  st=s.substr(l,r2-l+1);
+  else
+  st=s.substr(l2,r-l2+1);
+  cout<<s.substr(0,l)<<st<<s.substr(r+1)<<endl;
+  
+  }
+  
+  return 0;
+}
