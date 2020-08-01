@@ -1,0 +1,54 @@
+/* dpw4112001 */
+
+#include<bits/stdc++.h>
+using namespace std;
+#define pii pair<int,int>
+#define MOD 1000000007
+#define f first
+#define i insert
+#define all(x) x.begin(),x.end()
+#define s second
+#define pb push_back
+#define MX 1000005
+#define IO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+
+int32_t main()
+{IO;
+    int t=1;
+    //cin >>t ;
+    while(t--)
+    {
+        int n;cin >> n;
+     
+        int a[n+1];
+        for(int i=1;i<=n;i++)cin >> a[i];
+        sort(a+1,a+n+1);
+        int iptr=1;
+        int jptr=2;
+        int mx_sz=1;
+        while(jptr<=n)
+        {
+           if((a[jptr]-a[iptr])<=5)
+           {
+               mx_sz=max(mx_sz,jptr-iptr+1);
+               jptr++;
+           }
+           else
+           {
+               iptr++;
+           }
+        }
+        cout<<mx_sz<<'\n';
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
