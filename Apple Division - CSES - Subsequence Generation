@@ -1,0 +1,58 @@
+/* dpw4112001 */
+
+#include<bits/stdc++.h>
+using namespace std;
+#define pii pair<int,int>
+#define MOD 1000000007
+#define f first
+#define i insert
+#define all(x) x.begin(),x.end()
+#define s second
+#define pb push_back
+#define MX 1000005
+#define IO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define int long long
+set<string> perms;
+
+int32_t main()
+{IO;
+    int t=1;
+    //cin >>t ;
+    while(t--)
+    {
+        int n;
+        cin >> n;
+        int a[n];
+        int mn=LONG_MAX;
+        int sum=0;
+
+        for(int i=0;i<n;i++)
+        {
+            cin >> a[i];
+            sum+=a[i];
+        }
+        for(int i=0;i<(1<<n);i++)
+        {
+            int cur=0;
+            for(int j=0;j<n;j++)
+            {
+                if(1<<j & i)
+                    cur+=a[j];
+            }
+            cur=abs((sum-cur)-cur);
+            mn=min(mn,cur);
+        }
+        cout<<mn<<'\n';
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
