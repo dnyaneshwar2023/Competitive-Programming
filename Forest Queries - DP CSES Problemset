@@ -1,0 +1,64 @@
+/* dpw4112001 */
+
+#include<bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+
+using namespace std;
+#define pii pair<int,int>
+#define MOD 1000000007
+#define f first
+#define i insert
+#define all(x) x.begin(),x.end()
+#define s second
+#define pb push_back
+#define MX 1000005
+#define IO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define int long long
+
+int32_t main()
+{IO;
+    int t=1;
+    //cin >>t ;
+    while(t--){
+        int n;
+        cin >> n;
+        int queries;
+        cin >> queries;
+        char tree[n+1][n+1];
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                cin >> tree[i][j];
+            }
+        }
+        int dp[n+1][n+1];
+        memset(dp,0,sizeof dp);
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                dp[i][j]=dp[i-1][j]+dp[i][j-1]-dp[i-1][j-1]+(tree[i][j]=='*');
+            }
+        }
+        while(queries--)
+        {
+            int x1,y1,x2,y2;
+            cin >> x1 >> y1 >> x2 >> y2;
+            cout<<dp[x2][y2]-dp[x1-1][y2]-dp[x2][y1-1]+dp[x1-1][y1-1]<<'\n';
+        }
+
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
