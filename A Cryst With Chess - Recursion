@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+static int count=0;
+int bord[11][11]={0};
+void Chess(int ,int,int);
+int main()
+{
+	int i,j,n;
+	scanf("%d %d %d",&i,&j,&n);
+	Chess(i,j,n);
+	printf("%d",count);
+}
+void Chess(int i,int j,int n)
+{
+	if(i<1||i>10||j<1||j>10||n==-1)
+	{
+		return;
+	}
+	else
+	{
+		if(bord[i][j]==0&&n==0)
+		{
+			count++;
+			bord[i][j]=1;
+		}
+		Chess(i-1,j+2,n-1);
+		Chess(i+1,j+2,n-1);
+		Chess(i+2,j+1,n-1);
+		Chess(i-2,j+1,n-1);
+		Chess(i+2,j-1,n-1);
+		Chess(i-2,j-1,n-1);
+		Chess(i+1,j-2,n-1);
+		Chess(i-1,j-2,n-1);
+	}
+ 
+}
