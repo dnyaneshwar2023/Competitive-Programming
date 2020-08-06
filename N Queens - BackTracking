@@ -1,0 +1,55 @@
+/* C/C++ program to solve N Queen Problem using
+backtracking */
+#include<bits/stdc++.h>
+using namespace std;
+
+int ld[30] = { 0 };
+int rd[30] = { 0 };
+int N;
+int cl[30] = { 0 };
+void printSolution(int board[10][10])
+{
+    for (int i = N-1; i >=0; i--) {
+        for (int j = 0; j < N; j++)
+            printf("%d ", board[i][j]);
+        printf("\n");
+    }
+}
+bool solveNQUtil(int board[10][10], int col)
+{
+    if (col >= N)
+        return true;
+    for (int i = 0; i < N; i++) {
+        if ((ld[i - col + N - 1] != 1 &&
+             rd[i + col] != 1) && cl[i] != 1) {
+            board[i][col] = 1;
+            ld[i - col + N - 1] =
+            rd[i + col] = cl[i] = 1;
+            if (solveNQUtil(board, col + 1))
+                return true;
+            board[i][col] = 0;
+            ld[i - col + N - 1] =
+            rd[i + col] = cl[i] = 0;
+        }
+    }
+
+    return false;
+}
+bool solveNQ()
+{
+    cin >> N;
+    int board[10][10];
+    memset(board,0,sizeof board);
+    if(solveNQUtil(board,0)==false)
+    {
+        cout<<"Not possible";
+        return false;
+    }
+    printSolution(board);
+    return true;
+}
+int main()
+{
+    solveNQ();
+    return 0;
+}
