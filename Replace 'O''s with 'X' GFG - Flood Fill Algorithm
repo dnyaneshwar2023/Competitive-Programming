@@ -1,0 +1,92 @@
+/* dpw4112001 */
+
+#include<bits/stdc++.h>
+using namespace std;
+#define pii pair<int,int>
+#define MOD 1000000007
+#define f first
+#define i insert
+#define all(x) x.begin(),x.end()
+#define s second
+#define pb push_back
+#define MX 1000005
+#define IO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define int long long
+char M[101][101];
+int n,m;
+void floodFill(int r,int c,char change,char original)
+{
+    if(r<0 || c<0 || r >=n || c>=m)
+        return;
+    if(M[r][c]!=original)
+        return;
+    M[r][c]=change;
+    floodFill(r-1,c,change,original);
+    floodFill(r+1,c,change,original);
+    floodFill(r,c-1,change,original);
+    floodFill(r,c+1,change,original);
+}
+int32_t main()
+{IO;
+
+    int t;
+    cin >> t;
+
+    while(t--)
+    {
+        cin >> n >> m;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                cin >> M[i][j];
+                if(M[i][j]=='O')
+                    M[i][j]='-';
+            }
+        }
+
+        //Left
+        
+        for(int i=0;i<n;i++)
+        {
+            if(M[i][0]=='-')
+            floodFill(i,0,'O','-');
+        }
+        
+        //Right
+        for(int i=0;i<n;i++)
+        {
+            if(M[i][m-1]=='-')
+            floodFill(i,m-1,'O','-');
+        }
+        //Top
+        for(int i=0;i<m;i++)
+        {
+            if(M[0][i]=='-')
+            floodFill(0,i,'O','-');
+        }
+        
+        //Down
+        for(int i=0;i<m;i++)
+        {
+            if(M[n-1][i]=='-')
+            floodFill(n-1,i,'O','-');
+        }
+        
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(M[i][j]=='-')
+                    M[i][j]='X';
+                cout<<M[i][j]<<' ';
+            }
+        }
+        cout<<'\n';
+    }
+    return 0;
+}
+
+
+
