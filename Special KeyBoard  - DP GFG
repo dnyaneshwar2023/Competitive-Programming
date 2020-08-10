@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+int dp[76];
+int findoptimal(int N)
+{
+    if (N <= 6)
+        return N;
+    if(dp[N]!=-1)
+        return dp[N];
+    int max = 0;
+    int b;
+    for (b = N - 3; b >= 1; b--) {
+
+        int curr = (N - b - 1) * findoptimal(b);
+        if (curr > max)
+            max = curr;
+    }
+    return (dp[N]=max);
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        memset(dp,-1,sizeof dp);
+        int n;
+        cin >> n;
+        cout<<findoptimal(n)<<'\n';
+    }
+}
+
