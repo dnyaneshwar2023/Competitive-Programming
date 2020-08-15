@@ -1,0 +1,122 @@
+        /* dpw4112001 */
+
+        #include<bits/stdc++.h>
+        using namespace std;
+        #define pii pair<int,int>
+        #define MOD 1000000007
+        #define f first
+        #define i insert
+        #define all(x) x.begin(),x.end()
+        #define s second
+        #define pb push_back
+        #define MX 1000005
+        #define IO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+        #define int long long
+        int32_t main() {
+            IO;
+            int n, q;
+            cin >> n >> q;
+            int a[n + 1];
+            int b[n + 1];
+            int pa[n + 2] = {0};
+            int pb[n + 2] = {0};
+            int a_odd[n + 2] = {0};
+            int a_even[n + 2] = {0};
+            int b_odd[n + 2] = {0};
+            int b_even[n + 2] = {0};
+            for (int i = 1; i <= n; i++) {
+                cin >> a[i];
+                pa[i] = pa[i - 1];
+                pa[i] += a[i];
+            }
+            for (int i = 1; i <= n; i++) {
+                cin >> b[i];
+                pb[i] = pb[i - 1];
+                pb[i] += b[i];
+            }
+            for (int i = 1; i <= n; i++) {
+                a_odd[i] = a_odd[i - 1];
+                b_odd[i] = b_odd[i - 1];
+                a_even[i] = a_even[i - 1];
+                b_even[i] = b_even[i - 1];
+                if (i % 2 == 0) {
+                    a_even[i] += a[i];
+                    b_even[i] += b[i];
+                } else {
+                    a_odd[i] += a[i];
+                    b_odd[i] += b[i];
+                }
+            }
+            while (q--) {
+                int t, l, r;
+                cin >> t >> l >> r;
+                int ans = 0;
+                if (t == 1) {
+                    ans = pa[r] - pa[l - 1] + pb[r] - pb[l - 1];
+
+                    if (l % 2 == 0) {
+                        //exclude from array A
+                        int ll = l + 1;
+                        int rr = r;
+                        if (r % 2 == 0)
+                            rr--;
+                        ans -= (a_odd[rr] - a_odd[ll - 1]);
+                        //exclude from array B
+                        ll = l;
+                        rr = r;
+                        if (r % 2 == 1)
+                            rr--;
+                        ans -= (b_even[rr] - b_even[ll - 1]);
+                    } else {
+                        //exclude from array A
+                        int ll = l + 1;
+                        int rr = r;
+                        if (r % 2 == 1)
+                            rr--;
+                        ans -= (a_even[rr] - a_even[ll - 1]);
+                        //exclude from array B
+                        ll = l;
+                        rr = r;
+                        if (r % 2 == 0)
+                            rr--;
+                        ans -= (b_odd[rr] - b_odd[ll - 1]);
+                    }
+                } else {
+
+                    ans = pa[r] - pa[l - 1] + pb[r] - pb[l - 1];
+
+                    if (l % 2 == 0) {
+                        //exclude from array B
+                        int ll = l + 1;
+                        int rr = r;
+                        if (r % 2 == 0)
+                            rr--;
+                        ans -= (b_odd[rr] - b_odd[ll - 1]);
+                        //exclude from array A
+                        ll = l;
+                        rr = r;
+                        if (r % 2 == 1)
+                            rr--;
+                        ans -= (a_even[rr] - a_even[ll - 1]);
+                    } else {
+                        //exclude from array B
+                        int ll = l + 1;
+                        int rr = r;
+                        if (r % 2 == 1)
+                            rr--;
+                        ans -= (b_even[rr] - b_even[ll - 1]);
+                        //exclude from array A
+                        ll = l;
+                        rr = r;
+                        if (r % 2 == 0)
+                            rr--;
+                        ans -= (a_odd[rr] - a_odd[ll - 1]);
+                    }
+                }
+                cout << ans << '\n';
+            }
+        }
+
+
+
+
