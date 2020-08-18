@@ -1,0 +1,44 @@
+    #include<bits/stdc++.h>
+    using namespace std;
+    #define int long long
+    #define MOD 1000000007    
+    signed main()
+    {
+        int t=1;
+        int dp[2000010];
+        memset(dp,0,sizeof dp);
+        while(t--) {
+            int n;
+            cin >> n;
+            int coin[n];
+            dp[0]=1;
+            int mx=-1;
+            for(int i=0;i<n;i++)
+                cin >> coin[i],mx=max(mx,coin[i]);
+            for(int i=1;i<=2*mx;i++)
+            {
+                for(int j=0;j<n;j++)
+                {
+                    if((i>=coin[j]))
+                    {
+                        if(dp[i-coin[j]]!=0)
+                            dp[i]=1;
+                    }
+                }
+            }
+            for(int i=mx+1;i<=2*mx;i++)
+            {
+                if(dp[i]==0)
+                {
+                    cout<<i;
+                    return 0;
+                }
+            }
+            cout<<"Fake Offer!";
+
+        }
+        return 0;
+    }
+
+
+
