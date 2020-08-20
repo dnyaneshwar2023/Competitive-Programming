@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+ 
+long long dp[3000][3000];
+long long A[3000];
+long long n,p,m,s;
+ 
+ 
+long long cost(long long a,long long b){
+	if(b > a)
+		return p*(b-a);
+	else 
+		return m*(a-b);
+}
+ 
+int main(){
+	cin >> n >> s >> m >> p;
+	for(int i=0; i<n; i++)
+		cin >> A[i];
+ 
+	for(int i=0; i<n; i++)
+		dp[0][i] =- cost(A[0], A[i]);
+ 
+ 
+	for(int i=1; i<n; i++){
+		long long MX = 0;
+		for(int j=0; j<n; j++)
+			MX = max(MX, dp[i-1][j]);
+ 
+		for(int j=0;j<n;j++){
+			dp[i][j]= -cost(A[i],A[j]) + max(MX,dp[i-1][j]+s);
+		}
+	}
+	
+	long long ans = 0;
+	for(int i=0; i<n; i++)
+		ans = max(ans, dp[n-1][i]);
+	
+	
+	cout << ans << endl;
+	return 0;
+}
