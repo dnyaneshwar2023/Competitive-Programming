@@ -1,0 +1,34 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+const int mod=1e9+7;
+int dp[1000001][7][2];
+int n;
+string s;
+int f(int i,int d,int st){
+	if(i==n) return (d==0 && st);
+	if(dp[i][d][st]!=-1) return dp[i][d][st];
+	int ans=  0;
+	ans = (ans+f(i+1,(d*10 + s[i]-'0')%6,st|1))%mod;
+	ans = (ans+f(i+1,d,st))%mod;
+	return dp[i][d][st]=ans;
+}
+signed main()
+{
+
+    int t;
+    cin >> t;
+    while(t--)
+    {
+		memset(dp,-1,sizeof(dp));
+        cin >> s;
+        n=s.length();
+        cout<<f(0,0,0)<<'\n';
+    }
+
+
+
+    return 0;
+}
+
+
