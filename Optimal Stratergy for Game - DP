@@ -1,0 +1,27 @@
+using namespace std;
+int dp[1000][1000];
+int rec(int a[],int i,int j){
+    if(i>j)return 0;
+    if(i==j) return a[i];
+    if(i+1==j) return max(a[i],a[j]); 
+    if(dp[i][j]!=-1)return dp[i][j];
+    
+    dp[i][j]=max(a[i]+min(rec(a,i+1,j-1),rec(a,i+2,j)),a[j]+min(rec(a,i,j-2),rec(a,i+1,j-1)));
+    return dp[i][j];
+}
+
+int main() {
+	int t;cin>>t;
+	while(t--){
+	    int n;cin>>n;int a[n];
+	    for(int i=0;i<n;i++)
+	    cin>>a[i];
+	    for(int i=0;i<=n;i++){
+	        for(int j=0;j<=n;j++)
+	        dp[i][j]=-1;
+	    }
+	    int ans=rec(a,0,n-1);
+	    cout<<ans<<endl;
+	}
+	return 0;
+}
