@@ -1,0 +1,47 @@
+/* dpw4112001 */
+
+#include<bits/stdc++.h>
+using namespace std;
+#define pii pair<int,int>
+#define MOD 1000000007
+#define f first
+#define i insert
+#define all(x) x.begin(),x.end()
+#define s second
+#define pb push_back
+#define MX 1000005
+#define IO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define int long long
+
+int32_t main()
+{IO;
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        int n,m;
+        cin >> n >> m;
+        int mat[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                cin >> mat[i][j];
+            }
+        }
+        int mx=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                mx=max(mx,mat[i][j]);
+                if(i==0 || j==0)
+                    continue;
+                if(mat[i][j]==0)
+                continue;
+                mat[i][j]+=min(mat[i-1][j],min(mat[i][j-1],mat[i-1][j-1]));
+                mx=max(mx,mat[i][j]);
+            }
+        }
+        cout<<mx<<'\n';   
+    }
+    return 0;
+}
