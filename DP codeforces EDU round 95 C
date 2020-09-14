@@ -1,0 +1,43 @@
+
+Link : https://codeforces.com/contest/1418/problem/C
+
+//dpw4112001
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=200005;
+
+int n,a[N],dp[N][2];
+//Those who cannot remember the past are commended to repeat it.
+int solve(int i,int state)
+{
+	if(i>n+1)
+		return N;
+	if(i==n+1)
+		return 0;
+	if(dp[i][state]==-1)
+	{
+		dp[i][state]=min(state*(a[i])+solve(i+1,1-state),state*(a[i]+a[i+1])+solve(i+2,1-state));
+	}
+	return dp[i][state];
+}
+int main()
+{
+	#ifndef ONLINE_JUDGE
+	    freopen("input.txt","r",stdin);
+	    freopen("output.txt","w",stdout);
+	#endif
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		cin>>n;
+		for(int i=1;i<=n;i++)
+		{
+			cin>>a[i];
+			dp[i][0]=dp[i][1]=-1;
+		}
+		cout<<solve(1,1)<<"\n";
+	}
+}
+
