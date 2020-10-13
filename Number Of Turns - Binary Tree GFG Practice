@@ -1,0 +1,85 @@
+Node* lca(Node *root,int f,int s)
+{
+    if(root==NULL)
+        return NULL;
+    if(root->data == f)
+        return root;
+    if(root->data == s)
+        return root;
+    Node* l=lca(root->left,f,s);
+    Node* r=lca(root->right,f,s);   
+    if(l && r)
+        return root;
+    if(l==NULL)
+        return r;
+    else
+        return l;
+}
+void solve(Node *root,unordered_map<Node*,Node*> &m)
+{
+    if(root==NULL)
+        return ;
+    if(root->left)
+    {
+        m[root->left]=root;
+        solve(root->left,m);
+    }
+    if(root->right)
+    {
+        m[root->right]=root;
+        solve(root->right,m);
+    }
+}
+int NumberOFTurns(struct Node* root, int first, int second)
+{
+  // Your code goes here
+    Node* c=lca(root,first,second);
+    Node* ff=lca(root,first,first);
+    Node* ss=lca(root,second,second);
+    unordered_map<Node*,Node*>mp;
+    solve(root,mp);
+
+    vector<int>a,b;
+    while(ff!=c)
+    {
+        Node* tmp=mp[ff];
+        if(tmp->left==ff)
+        {
+            a.push_back(0);
+        }
+        else
+        {
+            a.push_back(1);
+        }
+        ff=tmp;
+    }
+    while(ss!=c)
+    {
+        Node* tmp=mp[ss];
+        if(tmp->left==ss)
+        {
+            b.push_back(0);
+        }
+        else
+        {
+            b.push_back(1);
+        }
+        ss=tmp;
+    }
+    int count=0;
+    for(int i=1;i<a.size();i++)
+    {
+        if(a[i]!=a[i-1])
+            count++;
+    }
+    for(int i=1;i<b.size();i++)
+    {
+        if(b[i]!=b[i-1])
+            count++;
+    }
+    if(a.size() >0  && b.size() > 0)
+        count++;
+    return count;
+
+
+}
