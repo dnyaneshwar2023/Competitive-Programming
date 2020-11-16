@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+char a[1001][1001];
+int level[1001][1001];
+int sum[1001][1001];
+int n,m,ax,by;
+void BFS(int x,int y)
+{
+    std::queue<pair<int,int>> Q;
+    Q.push({x,y});
+    sum[x][y]=a[x][y]-'0';
+    map<pair<int,int>,int>vis;
+    vis[{x,y}]=1;
+    
+    while(!Q.empty())
+    {
+        pair<int,int> p = Q.front();Q.pop();
+        
+        int xx=p.first;
+        int yy=p.second;
+        
+        int X[]={0,0,1,-1};
+        int Y[]={1,-1,0,0};
+        
+        for(int i=0;i<4;i++)
+        {
+            int xc=xx+X[i];
+            int yc=yy+Y[i];
+            if(xc<1 || yc<1 || xc>n || yc>m)
+            continue;
+            if(!vis[{xc,yc}] && a[xc][yc]!='*')
+            {
+                vis[{xc,yc}]=1;
+                level[xc][yc]=level[xx][yy]+1;
+                sum[xc][yc]=sum[xx][yy]+a[xc][yc]-'0';
+                Q.push({xc,yc});
+            }
+            else if(a[xc][yc]!='*' && level[xc][yc] == level[xx][yy]+1)
+            {
+                sum[xc][yc]=max(sum[xc][yc],sum[xx][yy]+a[xc][yc]-'0');
+            }
+        }
+        
+    }
+  
+}
+int32_t main()
+{
+    
+      for(int i=0;i<1001;i++)
+      {
+          for(int j=0;j<1001;j++)
+          {
+              sum[i][j]=level[i][j]=0;
+          }
+      }
+      cin >> n >> m;
+      for(int i=1;i<=n;i++)
+      {
+          for(int j=1;j<=m;j++)
+          cin >> a[i][j];
+      }
+      cin >> ax >> by;
+      BFS(ax,by);
+      int q;
+      cin >> q;
+      while(q--)
+      {
+          int x,y;
+          cin >> x >> y;
+          
+          if(sum[x][y]==0)
+          cout<<-1<<' '<<-1<<'\n';
+          else
+          cout<<level[x][y]<<' '<<sum[x][y]<<'\n';
+      }
+}
