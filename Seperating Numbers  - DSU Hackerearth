@@ -1,0 +1,73 @@
+#include<bits/stdc++.h>
+#define REP(i,n) for (int i = 1; i <= n; i++)
+#define mod 1000000007
+#define pb push_back
+#define ff first
+#define ss second
+#define ii pair<lli,lli>
+#define vi vector<lli>
+#define vii vector<ii>
+#define lli long long int
+#define endl '\n'
+using namespace std;
+int par[300001];
+map<lli,lli> mp[300001];
+ 
+lli ar[300001];
+vi adj[300001];
+vii edgeList;
+vi operations;
+ 
+int find(int a)
+{
+	if(par[a] == a) return a;
+	
+	return par[a] = find(par[a]);
+}
+ 
+lli merge(int a , int b)
+{
+	lli res = 0;
+	
+	if(mp[a].size() < mp[b].size())
+	swap(a , b);
+	
+	for(ii P : mp[b])
+	{
+		if(mp[a].find(P.ff) == mp[a].end())
+		mp[a][P.ff] = P.ss;
+		else
+		res += mp[a][P.ff] * P.ss , mp[a][P.ff] += P.ss;
+	}
+	
+	par[b] = a;
+	return res;
+}
+ 
+int main()
+{
+	int n , a , b;
+	cin>>n;
+	REP(i , n) par[i] = i;
+	
+	REP(i , n-1) cin>>a>>b , edgeList.push_back({a , b});
+	REP(i , n) cin>>ar[i] , mp[i][ar[i]] = 1;
+	
+	REP(i , n-1) cin>>a , operations.push_back(a);
+	
+	lli res = 0;
+	vi ans;
+	while(operations.size() > 0)
+	{
+		int idx = operations.back();
+		operations.pop_back();
+		
+		a = edgeList[idx-1].ff;
+		b = edgeList[idx-1].ss;
+		
+		ans.push_back(merge(find(a) , find(b)));
+	}
+	
+	while(ans.size() > 0)
+	cout<<ans.back()<<endl , ans.pop_back();
+}
