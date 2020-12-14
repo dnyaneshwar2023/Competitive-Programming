@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long 
+int in[1000001];
+vector<int> out[1000001];
+map<int,pair<int,int>> mp;
+signed main()
+{
+	int  n;
+	cin >> n;
+	for(int i=1;i<=n;i++)
+	{
+		cin >> in[i];
+		mp[in[i]] = {i,1};
+	}
+	for(int j=1;j<=n;j++)
+	{
+		int k;
+		cin >> k;
+		out[k].push_back(j);
+	}
+	stack<int> s;
+	int  par = 0;
+	int ans[1000001];
+
+	for(int i=0;i<2*n;i++)
+	{
+		int time = i;
+		int del = out[i].size();
+		while(!s.empty() && del>0)
+		{
+			int tmp = s.top();
+			s.pop();
+			if(!s.empty())
+			ans[tmp] = s.top();
+			else
+			ans[tmp] = 0;
+			del--;
+		}
+
+		if(mp.find(time)!=mp.end())
+		{
+			s.push(mp[time].first);
+		}
+	}
+
+	for(int i=1;i<=n;i++)
+	cout << ans[i] << ' ';
+		
+}
