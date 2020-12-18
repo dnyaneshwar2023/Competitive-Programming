@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+vector<int> g[100001];
+int sub[100001];
+int par[100001];
+int dfs(int u,int p = -1)
+{
+	int count = 1;
+	par[u] = par;
+	for(auto v : g[u])
+	{
+		if(v!=p)
+		{	
+			count += dfs(v);
+		}
+	}
+	return sub[u] = count;
+}
+signed main()
+{
+	memset(sub,0,sizeof sub);
+	int n;
+	cin >> n;
+	int z = n-1;
+	int x;
+	cin >> x;
+	while(z--)
+	{
+		int u,v;
+		cin >> u >> v;
+		g[u].push_back(v);
+		g[v].push_back(u);
+	}
+	dfs(1);
+	int multiplier = 0;
+	int ans = 0;
+	for(auto v:g[x])
+	{
+		if(v == par[x])
+			continue;
+		ans += sub[v];
+		ans += multiplier * sub[v];
+		multiplier += sub[v];
+	}
+
+	cout << ans << '\n';
+
+}
