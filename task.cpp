@@ -1,61 +1,94 @@
+
 #include <bits/stdc++.h>
-#define endl "\n"
-#define int long long
 using namespace std;
-int n;
-int ans;
-vector<pair<int,int>> g[100001];
-int dfs(int u,int par = -1)
-{
-	int child = 1;
-	for(auto node:g[u])
-	{
 
-		int v = node.first;
-		int w = node.second;
+const int MAX_SIZE = 500010;
+const int MAX_LEVELS =log2(MAX_SIZE) + 1;
 
-		if(v == par)
-			continue;
+int N, Q;
+vector<vector<int>> graph;
 
-		int k = dfs(v,u);
-		ans += 2*min(k,n-k)*w;
-		child += k;
-	}
-	return child;
+int depth[MAX_SIZE];
+int parents[MAX_SIZE][MAX_LEVELS];
+
+void dfs(int node, int parent) {
+    parents[node][0] = parent;
+    for (int i: graph[node]) {
+        if (i != parent) {
+            depth[i] = depth[node] + 1;
+            dfs(i, node);
+        }
+    }
+}
+int lca(int u, int v) {
+    if (depth[u] < depth[v]) {
+        swap(u, v);
+    }
+    for (int i = MAX_LEVELS - 1; i >= 0; i --) {
+        if (depth[u] >= depth[v] + (1 << i)) {
+            u = parents[u][i];
+        }
+    }
+    if (u == v) {
+        return u;
+    }
+    for (int i = MAX_LEVELS - 1; i >= 0; i --) {
+        if (parents[u][i] != 0 && parents[u][i] != parents[v][i]) {
+            u = parents[u][i];
+            v = parents[v][i];
+        }
+    }
+    return parents[u][0];
 }
 
+int main(int argc, const char * argv[]) {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    cin >> N;
+    int m;
+    cin >> m;
 
-int32_t main()
-{
-	#ifndef ONLINE_JUDGE
-        freopen("input.txt","r",stdin);
-        freopen("output.txt","w",stdout);
-    #endif
-	int t;
-	cin >> t;
-	int cs = 1;
-	while(t--)
-	{
-		for(int i=1;i<=100000;i++)g[i].clear();
-		ans = 0;
-		cin >> n;
-		for(int i=1;i<n;i++)
-		{
-			int u,v,w;cin >> u >> v >> w;
-			g[u].push_back({v,w});
-			g[v].push_back({u,w});
-		}
-		dfs(1);
-		cout << "Case #"<<cs++<<": ";
-		cout << ans << '\n';
-
-	}
-
-
-
-
-
-
-
-	return 0;
+    graph.resize(N + 1);
+    for (int i = 1; i < N; i ++) {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+    dfs(1, 0);
+    for (int i = 1; i < MAX_LEVELS; i ++) {
+        for (int j = 1; j <= N; j ++) {
+            if (parents[j][i - 1] != 0) {
+                parents[j][i] = parents[parents[j][i - 1]][i - 1];
+            }
+        }
+    }
+    for(int i=0;i<m;i++)
+    {
+        int k;cin >> k;
+        int mx = -1;
+        int a[k];
+        for(int i=0;i<k;i++)
+        {
+            cin >> a[i];
+        }
+        int m = 0;
+        int id =0;
+        for(int i=1;i<k;i++)
+        {
+            int p = depth[a[i]]+depth[a[0]] - 2*depth[lca(a[i],a[0])];
+            if(p>m)
+            {
+                m=p;id=i;
+            }
+        }
+        for(int i=0;i<k;i++)
+        {
+            int p = depth[a[i]]+depth[a[id]] - 2*depth[lca(a[i],a[id])];
+            mx = max(mx,p);
+        }
+        cout << mx << '\n';
+    }
+    return 0;
 }
