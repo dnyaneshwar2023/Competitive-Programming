@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+#include<stdio.h>
+using namespace std;
+#define pii pair<long long,long long>
+#define F(i,a,b) for(ll i = (ll)(a); i <= (ll)(b); i++)
+#define RF(i,a,b) for(ll i = (ll)(a); i >= (ll)(b); i--)
+#define PI 3.14159265
+#define ll long long
+#define ff first
+#define ss second
+#define pb(x) push_back(x)
+#define mp(x,y) make_pair(x,y)
+#define INF 1000000009
+#define mod 1000000007
+bool vis[1<<25]; // arry to keep track of visited numbers of size 2^20
+int main() 
+{
+	std::ios::sync_with_stdio(false);
+	ll n;
+	cin>>n;
+	string s;
+	cin>>s;
+	ll curnum=0;
+	ll j=n-1;
+	F(i,0,n-1)
+	{
+		if(s[i]=='B') // B means 1 
+			curnum = curnum^(1<<j);
+		j--;
+		//cout<<curnum<<endl;
+	}
+	//cout<<curnum<<endl;
+	queue <pii> q;
+	q.push(mp(curnum,0));
+	while(!q.empty())
+	{
+		ll cur = q.front().ff;
+		ll lev = q.front().ss;
+		q.pop();
+		if(cur==0 || cur==ceil(pow(2,n))-1)
+		{
+			//cout<<cur<<endl;
+			cout<<lev<<endl;
+			return 0;
+		}
+		if(vis[cur])
+			continue;
+		vis[cur]=1;
+		ll j=n-1;
+		F(i,0,n-2)
+		{
+			ll temp = cur;
+			temp = cur^(1<<j)^(1<<(j-1));
+			j--;
+			if(!vis[temp])
+				q.push(mp(temp,lev+1));
+			//cout<<temp<<endl;
+		}
+		j=n-1;
+		F(i,0,n-3)
+		{
+			ll temp = cur;
+			temp = cur^(1<<j)^(1<<(j-1))^(1<<(j-2));
+			j--;
+			if(!vis[temp])
+				q.push(mp(temp,lev+1));
+			//cout<<temp<<endl;	
+		}
+	}
+	return 0;
+}
