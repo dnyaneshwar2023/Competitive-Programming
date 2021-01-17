@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+const int INF = 100000000000;
+vector<pair<int,int>> g[100001];
+void dijkstra(int s,int n,vector<int> &d) {
+    d.assign(n+1,INF);
+    using pii = pair<int,int>;
+    priority_queue<pii, vector<pii>, greater<pii>> q;
+    q.push({0,s});
+    d[s] = 0;
+    while (!q.empty()) {
+        int v = q.top().second;
+        int d_v = q.top().first;
+        q.pop();
+        if(d[v]!=d_v)
+            continue;
+        for(auto edge:g[v])
+        {
+            int to = edge.first;
+            int w  = edge.second;
+            if(d[to] > d[v] + w)
+            {
+                d[to] = d[v] + w;
+                q.push({d[to],to});
+            }
+        }
+    }
+}
+
+signed main()
+{
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,m,k,x;
+    cin >> n >> m >> k >> x;
+    vector<int> c(n+1,0);
+    for(int i=0;i<k;i++)
+    {
+        int cc;cin >> cc;
+        c[cc]=1;
+    }
+    for(int i=0;i<m;i++)
+    {
+        int u,v,w;
+        cin >> u >> v >> w;
+        g[u].push_back({v,w});
+        g[v].push_back({u,w});
+    }
+
+    int A,B;
+    cin >> A >> B;
+    vector<int>d(n+1);
+    dijkstra(B,n,d);
+
+    vector<pair<int,int>> range;
+    for(int i=1;i<=n;i++)
+    {
+        if(i!=B && d[i]<=x && c[i])
+            range.push_back({i,d[i]});
+    }
+    dijkstra(A,n,d);
+    int mini = 100000000000;
+    for(int i=0;i<(int)range.size();i++)
+    {
+        if(d[range[i].first]!=INF)
+        {
+            mini = min(mini,d[range[i].first] + range[i].second);
+        }
+    }
+    if(mini == INF)
+    mini = -1;
+    cout << mini << '\n';
+
+
+
+
+    
+    
+
+}
