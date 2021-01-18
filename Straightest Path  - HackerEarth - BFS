@@ -1,0 +1,95 @@
+#pragma GCC optimize("O3") 
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+const int INF = 100000000000;
+int d[1001][1001][4];
+char a[1001][1001];
+int n,m;
+int X[4]={1,-1,0,0};
+int Y[4]={0,0,1,-1};
+char dir[4]={'D','U','R','L'};
+void dijkstra(int x,int y)
+{
+    for(int i=0;i<4;i++)
+    d[x][y][i] = 0;
+
+    using pii = pair<pair<int,int>,int>;
+    deque<pii>q;
+    for(int i=0;i<4;i++)
+    {
+        q.push_back({{x,y},i});
+    }
+
+    while(!q.empty())
+    {
+        int xc = q.front().first.first;
+        int yc = q.front().first.second;
+        int dd = q.front().second;
+        q.pop_front();
+        
+        for(int i=0;i<4;i++)
+        {
+            int xx = xc + X[i];
+            int yy = yc + Y[i];
+            if(xx<1||yy<1||xx>n||yy>m)
+                continue;
+            if(a[xx][yy] == '*'||a[xx][yy] == 'V')
+                continue;
+
+            if(d[xx][yy][i] == INF || d[xx][yy][i] > d[xc][yc][dd] + (dd!=i))
+            {
+                d[xx][yy][i] = d[xc][yc][dd] + (dd!=i);
+                if(i == dd)
+                    q.push_front({{xx,yy},i});
+                else
+                    q.push_back({{xx,yy},i});
+            }
+            
+        }
+
+    }
+
+
+}
+signed main()
+{
+    #ifndef ONLINE_JUDGE
+            freopen("input.txt","r",stdin);
+            freopen("output.txt","w",stdout);
+    #endif
+        
+    cin >>  n >> m;
+    int x,y;
+    int dx,dy;
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=m;j++)
+        {
+            cin >> a[i][j];
+            if(a[i][j] == 'V')
+                x=i,y=j;
+            if(a[i][j] == 'H')
+                dx=i,dy=j;
+        }
+    }
+    for(int i=1;i<=1000;i++)
+    {
+        for(int j=1;j<=1000;j++)
+        {
+            for(int k=0;k<4;k++)
+            d[i][j][k] = INF;
+        }
+    }
+    dijkstra(x,y);
+
+    int mini = INF;
+    for(int i=0;i<4;i++)
+    {
+        if(d[dx][dy][i] !=INF)
+            mini = min(mini,d[dx][dy][i]);
+    }
+    mini = (mini==INF)?-1:mini;
+    cout << mini;
+}
+
