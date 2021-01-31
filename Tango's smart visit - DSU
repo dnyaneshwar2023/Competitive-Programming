@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define max 100005
+vector<long long>g[max];
+vector<long long>p(max);
+vector<long long>size(max);
+ 
+void initialize(long long i)
+{
+    p[i] = i;
+    size[i] = 1;
+}
+ 
+long long find (long long i)
+{
+    if(p[i]==i) return i;
+    else return p[i]=find(p[i]);
+}
+ 
+void union_find(long long A,long long B)
+{
+    long long root_A = find(A);
+    long long root_B = find(B);
+    if(root_A!=root_B)
+        if(size[root_A] < size[root_B ])
+        {
+            p[root_A] = root_B;
+            size[root_B] += size[root_A];
+        }
+        else
+        {
+            p[root_B] = root_A;
+            size[root_A] += size[root_B];
+        }
+}
+ 
+int main()
+{
+    long long n,m,k;
+    cin>>n>>m>>k;
+	for(long long i=0;i<n;i++)
+	{
+		initialize(i);
+	}
+    for(long long i=0;i<m;i++)
+    {
+        long long a,b;
+        cin>>a>>b;
+        a--,b--;
+        g[a].push_back(b);
+        g[b].push_back(a);
+        union_find(a,b);
+    }
+    long long sz[n]={0};
+    long long total=0;
+    for(long long i=0;i<n;i++)
+    {
+        sz[find(i)]++;
+    }
+    for(long long i=0;i<n;i++)
+    {
+        total+=(sz[i]>0);
+    }  
+    set<long long>comp[n];
+    for(long long i=0;i<n;i++)
+    {
+        comp[find(i)].insert(i);
+    }
+    long long req=total,prev=0;
+    if(k<req-1)
+    {
+        cout<<"-1"<<endl;
+        return 0;
+    }
+    long long p=0;
+    while(p<n&& req<k)
+    {
+        cout<<p+1<<" ";
+        comp[find(p)].erase(p);
+        if(find(prev)!=find(p)) k--;
+        if(comp[find(p)].empty()) k++;
+        prev=p;
+        p++;
+    }
+    sort(comp,comp+n);
+    for(long long i=0;i<n;i++)
+    {
+        for(auto j:comp[i])
+        {
+            cout<<j+1<<" ";
+        }
+    }
+    cout<<endl;
+    return 0;
+}
