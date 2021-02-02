@@ -1,0 +1,160 @@
+
+/* Given a directed graph with n nodes and m edges.You are required to find
+   the maximum number of nodes you can visit starting from any node.You may visit
+   several nodes any number of times.(Starting node is also counted)
+   There may or may  not be cycles in graph
+
+   test:
+    6 7
+    1 2
+    2 3
+    3 1
+    2 4
+    4 5
+    5 6
+    6 4
+
+    answer: 6
+
+    1 -- 2 -- 3 -- 4 -- 5 -- 6
+
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long 
+vector<int> g[100005];
+vector<int> g2[100005];
+int vis[100005];
+int dp[100005];
+set<int> gg[100005];
+vector<int> order;
+int scc[100005];
+int sz[100005];
+int cost[100005];
+void dfs(int u)
+{
+    vis[u] = 1;
+
+    for(auto v:g[u])
+    {
+        if(!vis[v])
+        dfs(v);
+    }
+    order.push_back(u);
+}
+
+void dfs2(int u,int id,vector<int>&p)
+{
+    vis[u] = 1;
+    scc[u]=id;
+    p.push_back(u);
+    for(auto v:g2[u])
+    {
+        if(!vis[v])
+        dfs2(v,id,p);
+    }
+}
+
+void dfs3(int u)
+{
+    vis[u]=1;
+    for(auto v:gg[u])
+    {
+        if(!vis[v]){
+            dfs3(v);
+        }
+        dp[u] = min(dp[u],__gcd(dp[u],dp[v]));
+    }
+}
+
+
+signed main()
+{
+    #ifndef ONLINE_JUDGE
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
+    #endif
+    int n,m;
+    cin >> n >> m;
+    for(int i=1;i<=n;i++)cin >> cost[i];
+    vector<pair<int,int>> e;
+    for(int i=0;i<m;i++)
+    {
+        int a,b;
+        cin >> a >> b;
+        g[a].push_back(b);
+        g2[b].push_back(a);
+        e.push_back({a,b});
+    }
+
+    for(int i=1;i<=n;i++)
+    {
+        if(!vis[i])
+            dfs(i);
+    }
+    memset(vis,0,sizeof vis);
+    reverse(order.begin(),order.end());
+    int c = 1;
+    int ans = cost[1];
+    
+    for(int i=0;i<(int)order.size();i++)
+    {
+        if(!vis[order[i]])
+        {
+            
+            vector<int> p;
+            dfs2(order[i],c,p);
+
+            int gcd = cost[p[0]];
+            for(auto node:p)
+            {
+                ans = min(ans,cost[node]);
+                gcd = __gcd(gcd,cost[node]);
+                ans = min(ans,gcd);
+            }
+            
+            sz[c] = gcd;
+            ans = min(ans,gcd);
+            //cout << ans << ' ';
+            c++;
+        }
+    }
+
+    //cout << ans << '\n';
+    for(auto edge:e)
+    {
+        int from = edge.first;
+        int to = edge.second;
+
+        if(scc[from]!=scc[to])
+        {
+            gg[scc[from]].insert(scc[to]);
+        }
+    }
+
+
+    for(int i=1;i<=n;i++){
+        dp[i] = sz[i];
+        ///cout << dp[i] << ' ';
+    }
+
+    memset(vis,0,sizeof vis);
+    for(int i=1;i<=n;i++)
+    {
+        if(!vis[i])
+        {
+            dfs3(i);
+        }
+    }
+
+    for(int i=1;i<=n;i++)
+    {
+        if(dp[i]!=0)
+        ans = min(ans,dp[i]);
+    }
+    cout << ans << '\n';
+
+    return 0;
+    
+} 
